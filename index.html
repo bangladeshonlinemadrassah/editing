@@ -2089,5 +2089,566 @@
     // ডকুমেন্ট লোড হলে ইনিশিয়ালাইজ
     document.addEventListener('DOMContentLoaded', init);
   </script>
+<script>
+/* Dashboard Script */
+const STORAGE_KEYS = {
+  STUDENT_NAME: 'dakhil26_student_name',
+  JOIN_DATE: 'dakhil26_join_date',
+  LAST_LOGIN: 'dakhil26_last_login',
+  LAST_ACTIVITY: 'dakhil26_last_activity',
+  COMPLETED_ITEMS: 'dakhil26_completed_items',
+  NOTES: 'dakhil26_notes'
+};
+
+const motivationalQuotes = [
+  "প্রতিদিনের ক্লাস প্রতিদিন করুন, সাফল্য আপনার কাছে আসবে! 🌟",
+  "ছোট ছোট পদক্ষেপই বড় সাফল্যের পথ তৈরি করে! 💪",
+  "নিয়মিত পড়াশোনা আপনাকে লক্ষ্যের কাছে নিয়ে যাবে! 🚀",
+  "প্রতিটি ক্লাস আপনাকে এক ধাপ এগিয়ে নেয়! 🏆"
+];
+
+const badges = [
+  { name: 'Starter', threshold: 0, class: 'badge-starter', icon: '🏁' },
+  { name: 'Bronze Cup', threshold: 30, class: 'badge-bronze', icon: '🥉' },
+  { name: 'Silver Cup', threshold: 50, class: 'badge-silver', icon: '🥈' },
+  { name: 'Gold Cup', threshold: 65, class: 'badge-gold', icon: '🥇' },
+  { name: 'Platinum Trophy', threshold: 80, class: 'badge-platinum', icon: '🏆' }
+];
+
+function parseDate(dateStr) {
+  if (!dateStr) return new Date(0);
+  const [day, month, year] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function saveStudentData(name, joinDate, lastLogin, lastActivity, completedItems) {
+  localStorage.setItem(STORAGE_KEYS.STUDENT_NAME, name || 'শিক্ষার্থী');
+  localStorage.setItem(STORAGE_KEYS.JOIN_DATE, joinDate || getTodayDate());
+  localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, lastLogin || new Date().toISOString());
+  localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, lastActivity || new Date().toISOString());
+  localStorage.setItem(STORAGE_KEYS.COMPLETED_ITEMS, JSON.stringify(completedItems || []));
+}
+
+function getStudentData() {
+  return {
+    name: localStorage.getItem(STORAGE_KEYS.STUDENT_NAME) || 'শিক্ষার্থী',
+    joinDate: localStorage.getItem(STORAGE_KEYS.JOIN_DATE) || getTodayDate(),
+    lastLogin: localStorage.getItem(STORAGE_KEYS.LAST_LOGIN) || new Date().toISOString(),
+    lastActivity: localStorage.getItem(STORAGE_KEYS.LAST_ACTIVITY) || new Date().toISOString(),
+    completedItems: JSON.parse(localStorage.getItem(STORAGE_KEYS.COMPLETED_ITEMS)) || []
+  };
+}
+
+// Tracking function
+window.trackItem = function(id, type) {
+  const studentData = getStudentData();
+  let completed = studentData.completedItems;
+  if (completed.includes(id)) {
+    return; // Already completed
+  }
+
+  if (type === 'class') {
+    let scrolled = false;
+    const scrollListener = () => { scrolled = true; };
+    window.addEventListener('scroll', scrollListener);
+
+    const minTime = 0; // seconds
+    const maxTime = 0; // 7 minutes in seconds
+    const randomTime = Math.random() * (maxTime - minTime) + minTime;
+
+    setTimeout(() => {
+      window.removeEventListener('scroll', scrollListener);
+      if (!scrolled) {
+        completed.push(id);
+        saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
+        showNotification(`${type} সম্পন্ন হয়েছে!`, false);
+      } else {
+        showNotification('পেজ স্ক্রল হয়েছে, সম্পন্ন মনে করা হয়নি।', true);
+      }
+    }, randomTime * 1000);
+  } else {
+    // For missions and exams, complete immediately
+    completed.push(id);
+    saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
+    showNotification(`${type} সম্পন্ন হয়েছে!`, false);
+  }
+};
+
+function getItemsFromAllClasses() {
+  const items = {
+    classes: [],
+    missions: [],
+    exams: []
+  };
+
+  allClasses.forEach(cls => {
+    const idPrefix = cls.type === 'mission' ? 'm' : cls.type === 'exam' ? 'e' : 'c';
+    const trackId = idPrefix + cls.globalId;
+    const item = { id: trackId, addDate: cls.date };
+    if (cls.type === 'mission') {
+      items.missions.push(item);
+    } else if (cls.type === 'exam') {
+      items.exams.push(item);
+    } else {
+      items.classes.push(item);
+    }
+  });
+
+  return items;
+}
+
+function calculateStats(joinDate, completed) {
+  const joinDateObj = parseDate(joinDate);
+  const items = getItemsFromAllClasses();
+
+  function filterItems(itemList, isAfter) {
+    return itemList.filter(item => {
+      const addDateObj = parseDate(item.addDate);
+      return isAfter ? addDateObj >= joinDateObj : addDateObj < joinDateObj;
+    });
+  }
+
+  const afterClasses = filterItems(items.classes, true);
+  const beforeClasses = filterItems(items.classes, false);
+  const afterMissions = filterItems(items.missions, true);
+  const beforeMissions = filterItems(items.missions, false);
+  const afterExams = filterItems(items.exams, true);
+  const beforeExams = filterItems(items.exams, false);
+
+  const doneAfterClasses = afterClasses.filter(item => completed.includes(item.id)).length;
+  const doneBeforeClasses = beforeClasses.filter(item => completed.includes(item.id)).length;
+  const doneAfterMissions = afterMissions.filter(item => completed.includes(item.id)).length;
+  const doneBeforeMissions = beforeMissions.filter(item => completed.includes(item.id)).length;
+  const doneAfterExams = afterExams.filter(item => completed.includes(item.id)).length;
+  const doneBeforeExams = beforeExams.filter(item => completed.includes(item.id)).length;
+
+  const totalAll = items.classes.length + items.missions.length + items.exams.length;
+  const totalCompleted = completed.length;
+  const progress = totalAll > 0 ? (totalCompleted / totalAll) * 100 : 0;
+
+  return {
+    after: {
+      totalClasses: afterClasses.length,
+      doneClasses: doneAfterClasses,
+      pendingClasses: afterClasses.length - doneAfterClasses,
+      totalMissions: afterMissions.length,
+      doneMissions: doneAfterMissions,
+      pendingMissions: afterMissions.length - doneAfterMissions,
+      totalExams: afterExams.length,
+      doneExams: doneAfterExams,
+      pendingExams: afterExams.length - doneAfterExams
+    },
+    before: {
+      totalClasses: beforeClasses.length,
+      doneClasses: doneBeforeClasses,
+      pendingClasses: beforeClasses.length - doneBeforeClasses,
+      totalMissions: beforeMissions.length,
+      doneMissions: doneBeforeMissions,
+      pendingMissions: beforeMissions.length - doneBeforeMissions,
+      totalExams: beforeExams.length,
+      doneExams: doneBeforeExams,
+      pendingExams: beforeExams.length - doneBeforeExams
+    },
+    progress: progress.toFixed(1)
+  };
+}
+
+function getCurrentBadge(progress) {
+  for (let i = badges.length - 1; i >= 0; i--) {
+    if (progress >= badges[i].threshold) {
+      return badges[i];
+    }
+  }
+  return badges[0];
+}
+
+function saveNotes(notes) {
+  localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+}
+
+function getNotes() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
+}
+
+function renderNotes() {
+  const notesList = $('#notes-list');
+  const notes = getNotes();
+  notesList.innerHTML = '';
+  notes.forEach((note, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span>${note}</span>
+      <button onclick="deleteNote(${index})">মুছে ফেলুন</button>
+    `;
+    notesList.appendChild(li);
+  });
+}
+
+window.deleteNote = function(index) {
+  let notes = getNotes();
+  notes.splice(index, 1);
+  saveNotes(notes);
+  renderNotes();
+};
+
+function showDashboard() {
+  const studentData = getStudentData();
+  const isNewUser = !localStorage.getItem(STORAGE_KEYS.STUDENT_NAME);
+  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  const stats = calculateStats(studentData.joinDate, studentData.completedItems);
+  const currentBadge = getCurrentBadge(stats.progress);
+  const lastActivityDate = new Date(studentData.lastActivity);
+  const daysSinceActivity = (new Date() - lastActivityDate) / (1000 * 60 * 60 * 24);
+
+  const dashboardBody = $('#dashboard-body');
+  dashboardBody.innerHTML = `
+    ${isNewUser ? `
+      <div class="alert-box success bangla-font">
+        <i class="fas fa-info-circle"></i> আপনার নাম লিখুন এবং ড্যাশবোর্ড কাস্টমাইজ করুন!
+      </div>
+      <form class="name-input-form">
+        <input type="text" id="student-name-input" placeholder="আপনার নাম লিখুন" class="bangla-font">
+        <button type="submit" class="bangla-font">নাম সংরক্ষণ করুন</button>
+      </form>
+    ` : `
+      <header class="modal-header bangla-font">
+        <h2>স্বাগতম, ${studentData.name}!</h2>
+        <div class="badge-current ${currentBadge.class}" id="current-badge">${currentBadge.icon} ${currentBadge.name}</div>
+        <div id="close-btn" class="close-btn">✕</div>
+      </header>
+
+      <section class="motivation">
+        <p id="motivation-text" class="bangla-font">${randomQuote}</p>
+      </section>
+
+      <section class="stats after-join bangla-font">
+        <h2>জয়েন-এর পর</h2>
+        <div class="cards">
+          <div class="card" id="card-classes">
+            <h3>ক্লাস</h3>
+            <p>মোট: <span id="after-total-classes">${stats.after.totalClasses}</span></p>
+            <p>করা হয়েছে: <span id="after-done-classes">${stats.after.doneClasses}</span></p>
+            <p>বাকি আছে: <span id="after-pending-classes">${stats.after.pendingClasses}</span></p>
+          </div>
+          <div class="card" id="card-missions">
+            <h3>মিশন</h3>
+            <p>মোট: <span id="after-total-missions">${stats.after.totalMissions}</span></p>
+            <p>সম্পন্ন হয়েছে: <span id="after-done-missions">${stats.after.doneMissions}</span></p>
+            <p>বাকি আছে: <span id="after-pending-missions">${stats.after.pendingMissions}</span></p>
+          </div>
+          <div class="card" id="card-exams">
+            <h3>পরীক্ষা</h3>
+            <p>মোট: <span id="after-total-exams">${stats.after.totalExams}</span></p>
+            <p>দেওয়া হয়েছে: <span id="after-done-exams">${stats.after.doneExams}</span></p>
+            <p>বাকি আছে: <span id="after-pending-exams">${stats.after.pendingExams}</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats before-join bangla-font">
+        <h2>জয়েন-এর আগে</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>ক্লাস</h3>
+            <p>মোট: <span id="before-total-classes">${stats.before.totalClasses}</span></p>
+            <p>করা হয়েছে: <span id="before-done-classes">${stats.before.doneClasses}</span></p>
+            <p>বাকি আছে: <span id="before-pending-classes">${stats.before.pendingClasses}</span></p>
+          </div>
+          <div class="card">
+            <h3>মিশন</h3>
+            <p>মোট: <span id="before-total-missions">${stats.before.totalMissions}</span></p>
+            <p>সম্পন্ন হয়েছে: <span id="before-done-missions">${stats.before.doneMissions}</span></p>
+            <p>বাকি আছে: <span id="before-pending-missions">${stats.before.pendingMissions}</span></p>
+          </div>
+          <div class="card">
+            <h3>পরীক্ষা</h3>
+            <p>মোট: <span id="before-total-exams">${stats.before.totalExams}</span></p>
+            <p>দেওয়া হয়েছে: <span id="before-done-exams">${stats.before.doneExams}</span></p>
+            <p>বাকি আছে: <span id="before-pending-exams">${stats.before.pendingExams}</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="alarms" class="alarms bangla-font"></section>
+
+      <section class="progress-section bangla-font">
+        <h3>সম্মক অগ্রগতি</h3>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" style="width: ${stats.progress}%"></div>
+        </div>
+        <p>${stats.progress}%</p>
+      </section>
+
+      <div class="badges-dropdown bangla-font">
+        <label for="badges-select">ব্যাজসমূহ:</label>
+        <select id="badges-select">
+          ${badges.map(badge => `
+            <option ${stats.progress >= badge.threshold ? '' : 'disabled'}>${badge.icon} ${badge.name} ${stats.progress >= badge.threshold ? '(প্রাপ্ত)' : '(লক)'}</option>
+          `).join('')}
+        </select>
+      </div>
+
+      <section class="notes-section bangla-font">
+        <h3>আমার নোটস</h3>
+        <textarea id="note-input" placeholder="নতুন নোট লিখুন..."></textarea>
+        <button id="add-note-btn">নোট যোগ করুন</button>
+        <ul id="notes-list"></ul>
+      </section>
+    `}
+  `;
+
+  if (isNewUser) {
+    const form = dashboardBody.querySelector('.name-input-form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameInput = $('#student-name-input').value.trim();
+      if (nameInput) {
+        saveStudentData(nameInput, getTodayDate(), new Date().toISOString(), new Date().toISOString(), []);
+        showNotification('নাম সফলভাবে সংরক্ষিত হয়েছে!', false);
+        showDashboard();
+      } else {
+        showNotification('অনুগ্রহ করে একটি বৈধ নাম লিখুন', true);
+      }
+    });
+  } else {
+    // Update last login
+    localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, new Date().toISOString());
+
+    // Alarms
+    const alarms = $('#alarms');
+    if (stats.before.pendingClasses + stats.before.pendingMissions + stats.before.pendingExams > 0) {
+      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের আগের ক্লাস, মিশন এবং পরীক্ষাগুলো নিজ দায়িত্বে সম্পন্ন করুন যতক্ষণ না সবগুলো শেষ হয়।</div>`;
+    }
+    if (daysSinceActivity > 7) {
+      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ সপ্তাহের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে সপ্তাহের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
+    }
+    if (daysSinceActivity > 30) {
+      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ মাসের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে মাসের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
+    }
+    if (stats.progress < 10 && !isNewUser) {
+      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনার অগ্রগতি খুব কম! নিয়মিত ক্লাস করে অগ্রসর হোন।</div>`;
+    }
+    if (stats.after.pendingClasses > 5) {
+      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের পরের ক্লাসগুলোতে অনেক বাকি! দ্রুত সম্পন্ন করুন।</div>`;
+    }
+
+    // Close button
+    const closeBtn = $('#close-btn');
+    closeBtn.addEventListener('click', () => {
+      const dashboardModal = $('#dashboard-modal');
+      dashboardModal.classList.remove('show');
+    });
+
+    // Notes functionality
+    renderNotes();
+    const addNoteBtn = $('#add-note-btn');
+    addNoteBtn.addEventListener('click', () => {
+      const noteInput = $('#note-input');
+      const noteText = noteInput.value.trim();
+      if (noteText) {
+        let notes = getNotes();
+        notes.push(noteText);
+        saveNotes(notes);
+        renderNotes();
+        noteInput.value = '';
+        showNotification('নোট যোগ করা হয়েছে!', false);
+      } else {
+        showNotification('অনুগ্রহ করে নোট লিখুন', true);
+      }
+    });
+  }
+
+  const dashboardModal = $('#dashboard-modal');
+  dashboardModal.classList.add('show');
+}
+
+const dashboardBtn = $('#dashboard-btn');
+dashboardBtn.addEventListener('click', () => {
+  showDashboard();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (checkLoginExpiry()) {
+    loginPage.style.display = 'none';
+    mainPage.style.display = 'block';
+    loadInitialData();
+    showAddClassButton();
+    showDashboardButton();
+  } else {
+    loginPage.style.display = 'flex';
+    mainPage.style.display = 'none';
+    subjectPage.style.display = 'none';
+  }
+  initializeEventListeners();
+});
+</script>
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEX1EuBWpSMlZ9zbXs1lAVQkOTdeV779SsD6SF6RllQGMYxcHJu30p5BPzW7O-PAbysg/exec";
+
+function $(sel){ return document.querySelector(sel); }
+
+function showNotification(message, isError=false){
+  const notification = $('#notification');
+  notification.innerHTML = `<i class="${isError?'fas fa-exclamation-circle':'fas fa-check-circle'}"></i> <span class="bangla-font">${message}</span>`;
+  notification.className=`notification ${isError?'error':'success'}`;
+  notification.classList.add('show');
+  setTimeout(()=>notification.classList.remove('show'),3000);
+}
+
+let storedName = localStorage.getItem('userName') || '';
+
+function showNameModal(){ $('#nameModal').style.display='flex'; }
+function hideNameModal(){ $('#nameModal').style.display='none'; }
+
+function saveName(event){
+  event.preventDefault();
+  const name = $('#userName').value.trim();
+  if (name) {
+    localStorage.setItem('userName', name);
+    storedName = name;
+    hideNameModal();
+    showForm();
+  } else {
+    showNotification("নাম লিখুন!", true);
+  }
+}
+
+function handleFormClick() {
+  if (!storedName) {
+    showNameModal();
+  } else {
+    showForm();
+  }
+}
+
+function showForm(){ 
+  $('#formModal').style.display='flex'; 
+  $('#myForm').reset(); 
+  $('#name').value = storedName;
+}
+
+function hideForm(){ $('#formModal').style.display='none'; }
+
+function showSubmissions(){ 
+  $('#submissionsModal').style.display='flex'; 
+  loadSubmissions(); 
+}
+
+function hideSubmissions(){ $('#submissionsModal').style.display='none'; }
+
+function submitForm(event){
+  event.preventDefault();
+  const submitBtn = $('#submitBtn');
+  submitBtn.classList.add('loading');
+  submitBtn.disabled = true;
+  const form = $('#myForm');
+  const data = {
+    name: form.name.value.trim(),
+    batch: form.batch.value,
+    message: form.message.value.trim()
+  };
+
+  fetch(WEB_APP_URL,{
+    method:'POST',
+    body:JSON.stringify(data)
+  })
+  .then(res=>res.text())
+  .then(txt=>{
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+    if(txt.startsWith("Success")){
+      form.reset(); hideForm(); showSuccessMessage();
+    }else{
+      showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
+    }
+  })
+  .catch(()=>{
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+    showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
+  });
+}
+
+function showSuccessMessage(){
+  const successMessage = $('#successMessage');
+  successMessage.style.display='block';
+  setTimeout(()=>successMessage.style.display='none',3000);
+}
+
+function loadSubmissions() {
+  fetch(WEB_APP_URL + '?action=getSubmissions')
+    .then(res => res.json())
+    .then(data => {
+      const list = $('#submissions-list');
+      list.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'submission-item';
+        div.innerHTML = `
+          <div class="submission-name bangla-font">${item.name}</div>
+          <div class="submission-batch bangla-font">ব্যাচ: ${item.batch}</div>
+          <div class="submission-message bangla-font">${item.message}</div>
+          ${item.reply ? `<div class="submission-reply bangla-font">উত্তর: ${item.reply}</div>` : ''}
+          <div class="submission-time bangla-font">${item.time}</div>
+        `;
+        list.appendChild(div);
+      });
+    })
+    .catch(() => showNotification("সাবমিশন লোড হয়নি! আবার চেষ্টা করুন।", true));
+}
+
+$('#form-button').addEventListener('click', handleFormClick);
+$('#submissions-button').addEventListener('click',showSubmissions);
+window.addEventListener('click',(e)=>{ 
+  if(e.target==$('#nameModal')) hideNameModal(); 
+  if(e.target==$('#formModal')) hideForm(); 
+  if(e.target==$('#submissionsModal')) hideSubmissions(); 
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Notice bar code
+  const noticeBar = document.querySelector('.notice-bar');
+  const noticeSpan = document.querySelector('.notice-bar span');
+  
+  if (noticeBar && noticeSpan) {
+    noticeBar.style.visibility = 'visible';
+    noticeBar.style.opacity = '1';
+    
+    setTimeout(() => {
+      noticeSpan.style.animation = 'none';
+      void noticeSpan.offsetWidth;
+      noticeSpan.style.animation = 'marquee 40s linear infinite 0s';
+    }, 10);
+  }
+
+  // Button visibility - with page reload check
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('refreshed')) {
+    // Already refreshed, proceed normally
+    setButtonVisibility();
+  } else {
+    // First load, add parameter and reload
+    urlParams.set('refreshed', 'true');
+    window.location.search = urlParams.toString();
+  }
+});
+
+function setButtonVisibility() {
+  const role = getUserRole();
+  const formButton = $('#form-button');
+  const submissionsButton = $('#submissions-button');
+  
+  // Reset both first
+  formButton.style.display = 'none';
+  submissionsButton.style.display = 'none';
+  
+  if (role === 'user') {
+    formButton.style.display = 'inline-flex';
+  } else if (role === 'owner') {
+    submissionsButton.style.display = 'inline-flex';
+  }
+}
+</script>
 </body>
 </html>
