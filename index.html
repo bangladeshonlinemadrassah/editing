@@ -1345,9 +1345,244 @@
       align-items: center;
       gap: 6px;
     }
-  </style>
-  <style>
-        /* Dashboard Styles */
+
+    /* =========================
+    NEW FEATURES STYLES
+    ========================= */
+    
+    /* Notice Bar */
+    .notice-bar {
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--warning);
+      font-size: 0.8rem;
+      padding: 8px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--glass-border);
+      margin-top: 0;
+      position: relative;
+    }
+
+    .notice-bar span {
+      display: inline-block;
+      animation: marquee 40s linear infinite 0s;
+      padding-left: 100%;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+      padding: 0 20px;
+    }
+
+    .form-button, .submissions-button, .dashboard-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-button:hover, .submissions-button:hover, .dashboard-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-button::before, .submissions-button::before, .dashboard-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .form-button:hover::before, .submissions-button:hover::before, .dashboard-button:hover::before {
+      left: 100%;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 25px;
+      max-width: 600px;
+      width: 90%;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    .modal-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--danger);
+    }
+
+    .modal-intro {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .modal-intro h2 {
+      font-size: 1.4rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .modal-intro p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-section label {
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-align: left;
+    }
+
+    .form-section input, .form-section select, .form-section textarea {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--text);
+      outline: none;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      font-size: 0.9rem;
+    }
+
+    .form-section input:focus, .form-section select:focus, .form-section textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .form-section textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+    }
+
+    .submit-button.loading .spinner {
+      display: inline-block;
+    }
+
+    .submit-button.loading {
+      animation: none !important;
+    }
+
+    .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Dashboard Modal */
     .dashboard-modal {
       position: fixed;
       top: 0;
@@ -1369,70 +1604,71 @@
       visibility: visible;
     }
 
-    .modal-content {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 30px;
-      max-width: 600px;
-      width: 90%;
-      max-height: 80vh;
+    .dashboard-modal .modal-content {
+      max-width: 800px;
+      max-height: 85vh;
+    }
+
+    /* Submissions List */
+    .submissions-list, .reply-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: 60vh;
       overflow-y: auto;
-      backdrop-filter: blur(15px);
-      box-shadow: var(--shadow-lg);
-      position: relative;
     }
 
-    .modal-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .modal-header h2 {
-      font-size: 1.5rem;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 10px;
-    }
-
-    .modal-body {
-      margin-bottom: 25px;
-    }
-
-    .modal-body p {
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 15px;
-    }
-
-    .modal-footer {
-      text-align: center;
-    }
-
-    .modal-ok-btn {
-      padding: 12px 30px;
+    .submission-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
       border-radius: 10px;
-      border: none;
-      background: var(--gradient-primary);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 15px;
+      box-shadow: var(--shadow-sm);
       transition: var(--transition);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
     }
 
-    .modal-ok-btn:hover {
+    .submission-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+      box-shadow: var(--shadow-md);
     }
 
+    .submission-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .submission-batch {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .submission-message {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .submission-reply {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 10px;
+      color: var(--secondary);
+    }
+
+    .submission-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    /* Dashboard Styles */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 15px;
-      margin-top: 20px;
+      margin: 20px 0;
     }
 
     .stat-item {
@@ -1441,171 +1677,6 @@
       border-radius: 12px;
       padding: 15px;
       text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 800;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .alert-box {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid var(--danger);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
-      color: var(--text);
-      position: relative;
-    }
-
-    .alert-box.warning {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: var(--warning);
-    }
-
-    .alert-box i {
-      margin-right: 10px;
-    }
-
-    .name-input-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .name-input-form input {
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
-      background: var(--glass);
-      color: var(--text);
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .name-input-form button {
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
-      background: var(--gradient-primary);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .progress-bar {
-      height: 10px;
-      background: var(--text-muted);
-      border-radius: 5px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--gradient-primary);
-      transition: width 0.5s ease;
-    }
-
-    @media (max-width: 480px) {
-      .modal-content {
-        padding: 20px;
-      }
-
-      .modal-header h2 {
-        font-size: 1.5rem;
-      }
-    }
-
-    /* Additional styles that might be referenced in dashboard */
-    .notification {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      padding: 15px 22px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      box-shadow: var(--shadow-lg);
-      z-index: 1000;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.3s, transform 0.3s;
-      backdrop-filter: blur(15px);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      max-width: 350px;
-      font-size: 0.9rem;
-    }
-
-    .notification.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .notification.error {
-      border-left: 4px solid var(--danger);
-    }
-
-    .notification.success {
-      border-left: 4px solid var(--secondary);
-    }
-
-    .notification.warning {
-      border-left: 4px solid var(--warning);
-    }
-
-    /* New styles for updated dashboard */
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .close-btn:hover {
-      color: var(--text);
-    }
-
-    .stats {
-      margin-bottom: 20px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-    }
-
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 15px;
-      text-align: left;
-    }
-
-    .card h3 {
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-
-    .card p {
-      margin: 5px 0;
-      font-size: 0.9rem;
     }
 
     .badge-current {
@@ -1642,42 +1713,39 @@
       color: black;
     }
 
-    .badges-dropdown {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .badges-dropdown select {
-      padding: 10px;
+    .alert-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--danger);
       border-radius: 10px;
-      background: var(--glass);
+      padding: 15px;
+      margin-bottom: 15px;
       color: var(--text);
-      border: 1px solid var(--card-border);
     }
 
-    .alarms .alert-box {
-      margin-bottom: 10px;
+    .alert-box.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--warning);
     }
 
-    .progress-section {
-      margin-top: 20px;
-      text-align: center;
+    .progress-bar {
+      height: 10px;
+      background: var(--text-muted);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 10px 0;
     }
 
-    .progress-section p {
-      margin-top: 10px;
-    }
-
-    /* Notes Section Styles */
-    .notes-section {
-      margin-top: 20px;
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: width 0.5s ease;
     }
 
     .notes-section textarea {
       width: 100%;
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--glass-border);
       background: var(--glass);
       color: var(--text);
       outline: none;
@@ -1716,94 +1784,27 @@
       background: var(--danger);
       padding: 5px 10px;
       font-size: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
     }
-  </style>
-  <style>
-:root{
---primary:#2563eb; --primary-dark:#1e40af; --secondary:#10b981; --accent:#8b5cf6; --danger:#ef4444;
---warning:#f59e0b; --dark:#0f172a; --darker:#0a0e1a; --light:#f1f5f9; --text:#e2e8f0;
---text-muted:#94a3b8; --card-bg:rgba(30,41,59,0.7); --card-border:rgba(255,255,255,0.08);
---glass:rgba(15,23,42,0.6); --glass-border:rgba(255,255,255,0.1);
---gradient-primary:linear-gradient(135deg,#2563eb 0%,#10b981 100%);
---gradient-secondary:linear-gradient(135deg,#8b5cf6 0%,#ec4899 100%);
---shadow-sm:0 4px 6px rgba(0,0,0,0.1); --shadow-md:0 10px 15px -3px rgba(0,0,0,0.2);
---shadow-lg:0 20px 25px -5px rgba(0,0,0,0.3); --radius:12px; --transition:all 0.3s ease;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{background:var(--darker);color:var(--text);font-family:'Poppins','Tiro Bangla',system-ui,sans-serif;line-height:1.6;min-height:100vh;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;}
-body::-webkit-scrollbar{display:none;}
-.bangla-font{font-family:'Tiro Bangla','Poppins',serif;}
-.container{max-width:980px;margin:40px auto;padding:20px;}
-.action-buttons{display:flex;justify-content:center;gap:12px;margin-bottom:20px;}
-.form-button,.submissions-button,.comment-button,.reply-button,.admin-button{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:none;background:var(--gradient-primary);color:white;font-weight:600;font-size:0.85rem;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
-.form-button:hover,.submissions-button:hover,.comment-button:hover,.reply-button:hover,.admin-button:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
-.form-button::before,.submissions-button::before,.comment-button::before,.reply-button::before,.admin-button::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:0.5s;}
-.form-button:hover::before,.submissions-button:hover::before,.comment-button:hover::before,.reply-button:hover::before,.admin-button:hover::before{left:100%;}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(5px);}
-.modal-content{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:25px;max-width:600px;width:90%;backdrop-filter:blur(12px);box-shadow:var(--shadow-lg);position:relative;overflow-y:auto;max-height:90vh;scroll-behavior:smooth;}
-.modal-content::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient-primary);}
-.modal-close{position:absolute;top:15px;right:15px;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;transition:var(--transition);}
-.modal-close:hover{color:var(--danger);}
-.modal-intro{margin-bottom:20px;text-align:center;}
-.modal-intro h2{font-size:1.4rem;background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px;}
-.modal-intro p{color:var(--text-muted);font-size:0.9rem;line-height:1.6;}
-.form-section{display:flex;flex-direction:column;gap:25px;}
-.form-section label{font-weight:bold;font-size:0.95rem;color:var(--text);text-align:left;}
-.form-section input,.form-section select,.form-section textarea{padding:12px 16px;border-radius:10px;border:1px solid var(--card-border);background:var(--glass);color:var(--text);outline:none;transition:var(--transition);backdrop-filter:blur(10px);font-size:0.9rem;}
-.form-section input:focus,.form-section select:focus,.form-section textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.2);}
-.form-section textarea{resize:vertical;min-height:120px;}
-.submit-button{width:100%;padding:12px;border-radius:10px;border:none;background:var(--gradient-primary);color:white;font-weight:600;font-size:0.95rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 10px rgba(37,99,235,0.3);display:flex;align-items:center;justify-content:center;gap:8px;}
-.submit-button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(37,99,235,0.4);}
-.submit-button.loading .spinner{display:inline-block;}
-.submit-button.loading{animation: none !important;}
-.spinner{display:none;width:16px;height:16px;border:2px solid white;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite;}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-.success-message{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--secondary);color:white;padding:20px 40px;border-radius:10px;z-index:2000;font-size:1rem;box-shadow:var(--shadow-md);text-align:center;max-width:80%;}
-.notification{position:fixed;bottom:30px;right:30px;padding:15px 22px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:opacity 0.3s,transform 0.3s;backdrop-filter:blur(15px);display:flex;align-items:center;gap:10px;max-width:350px;font-size:0.9rem;}
-.notification.show{opacity:1;transform:translateY(0);}
-.notification.success{border-left:4px solid var(--secondary);}
-.notification.error{border-left:4px solid var(--danger);}
-.submissions-list,.reply-list,.sub-buttons{display:flex;flex-direction:column;gap:15px;max-height:60vh;overflow-y:auto;scroll-behavior:smooth;}
-.submission-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;padding:15px;box-shadow:var(--shadow-sm);transition:var(--transition);}
-.submission-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
-.submission-name{font-weight:600;font-size:1rem;color:var(--primary);}
-.submission-batch{font-size:0.85rem;color:var(--text-muted);}
-.submission-message{margin-top:10px;font-size:0.9rem;}
-.submission-reply{margin-top:10px;font-size:0.9rem;border-top:1px solid var(--card-border);padding-top:10px;color:var(--secondary);}
-.submission-time{font-size:0.75rem;color:var(--text-muted);margin-top:5px;text-align:right;}
-.reply-btn{padding:8px 16px;border-radius:8px;background:var(--gradient-secondary);color:white;border:none;cursor:pointer;margin-top:10px;transition:var(--transition);box-shadow:var(--shadow-sm);}
-.reply-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
-.warning-message{background:var(--warning);color:white;padding:15px;border-radius:10px;margin-bottom:20px;text-align:center;font-size:0.9rem;}
-@media(max-width:768px){.container{padding:15px;margin:20px;}.modal-content{padding:20px;max-height:90vh;}.action-buttons{flex-direction:column;gap:10px;}.form-button,.submissions-button,.comment-button,.reply-button,.admin-button{width:100%;justify-content:center;}}
-@media(max-width:480px){.modal-intro h2{font-size:1.2rem;}.form-section label,.form-section input,.form-section select,.form-section textarea,.submit-button{font-size:0.85rem;}.submission-item{padding:12px;}.submission-name,.submission-message{font-size:0.85rem;}.submission-batch,.submission-time{font-size:0.75rem;}}
-</style>
-  <style>
-.notice-bar {
-  overflow: hidden;
-  white-space: nowrap;
-  background: rgba(37, 99, 235, 0.1);
-  color: var(--warning);
-  font-size: 0.8rem;
-  padding: 6px 0;
-  text-align: center;
-  border-bottom: 1px solid var(--card-border);
-  margin-top: 0;
-  position: relative;
-}
 
-.notice-bar span {
-  display: inline-block;
-  animation: marquee 40s linear infinite 0s;
-  padding-left: 100%; /* এটি গুরুত্বপূর্ণ - gap দূর করবে */
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .form-button, .submissions-button, .dashboard-button {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .dashboard-modal .modal-content {
+        padding: 20px;
+        max-height: 90vh;
+      }
     }
   </style>
 </head>
@@ -1832,6 +1833,7 @@ body::-webkit-scrollbar{display:none;}
       </div>
     </div>
   </div>
+  
   <!-- মেইন ইনডেক্স পৃষ্ঠা (প্রথমে লুকানো) -->
   <div id="main-page" style="display: none;">
     <header>
@@ -1848,22 +1850,24 @@ body::-webkit-scrollbar{display:none;}
         </div>
       </nav>
     </header>
-    <div class="notice-bar bangla-font"><span><b>নতুন যোগ করা হয়েছে: ড্যাশবোর্ড এবং কমেন্ট সুবিধা! আপনার শিক্ষা যাত্রার অগ্রগতি পর্যবেক্ষণ করুন এবং আপনার মূল্যবান মতামত আমাদের জানান।</b></span></div>
+    
+    <!-- Notice Bar -->
+    <div class="notice-bar bangla-font">
+      <span style="animation: marquee 40s linear infinite 0s;"><b>নতুন যোগ করা হয়েছে: ড্যাশবোর্ড এবং কমেন্ট সুবিধা! আপনার শিক্ষা যাত্রার অগ্রগতি পর্যবেক্ষণ করুন এবং আপনার মূল্যবান মতামত কমেন্ট সেকশনের মাধ্যমে আমাদেরকে জানান।</b></span>
+    </div>
+    
     <main class="container">
-      <!-- New: Button group for Refresh and Add Class buttons -->
+      <!-- Button group for Refresh, Add Class, and Dashboard buttons -->
       <div class="button-group">
         <button class="refresh-btn bangla-font" id="refresh-btn" onclick="refreshData()">
           <i class="fas fa-sync-alt"></i> <span id="refresh-btn-text">ডাটা রিফ্রেশ করুন</span>
         </button>
+        <button class="dashboard-button bangla-font" id="dashboard-btn" style="display: none;">
+          <i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড
+        </button>
         <a class="add-class-btn bangla-font" id="add-class-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeBjBhyRPk0tb5GTLXIxsZZxwSoP12npKInobGYBN4TTafXkg/viewform?usp=header" target="_blank" style="display: none;">
           <i class="fas fa-plus-circle"></i> ক্লাস যুক্ত করুন
         </a>
-        <button class="btn" id="dashboard-btn" style="display: none;"><i class="fas fa-tachometer-alt"></i> <span class="bangla-font">ড্যাশবোর্ড</span></button>
-      </div>
-      <div class="controls">
-          <button class="btn" id="refresh-data-btn"><i class="fas fa-sync-alt"></i> <span class="bangla-font">ডেটা রিফ্রেশ</span></button>
-          <button class="btn" id="dashboard-btn" style="display: none;"><i class="fas fa-tachometer-alt"></i> <span class="bangla-font">ড্যাশবোর্ড</span></button>
-          <a class="btn" id="add-class-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfL0sFmx3IiTXCiFFraymOe65ITt6TqtTJVgjQln5dpAgk1oQ/viewform?usp=header" target="_blank" rel="noopener" style="display: none;"><i class="fas fa-plus-circle"></i> <span class="bangla-font">ক্লাস যুক্ত করুন</span></a>
       </div>
       
       <!-- হিরো সেকশন -->
@@ -1871,6 +1875,7 @@ body::-webkit-scrollbar{display:none;}
         <h1 class="bangla-font">ALIM-25 BOM Admission Course 1.0</h1>
         <p class="bangla-font">DU, CU, RU, SUST, GST, NU, JU, IU সহ সব বিশ্ববিদ্যালয়ের জন্য গুরুত্বপূর্ণ সাবজেক্টের উপর একসাথে গোছানো প্রস্তুতি</p>
       </div>
+      
       <!-- স্ট্যাটস সেকশন -->
       <div class="stats">
         <div class="stat-card fade-in">
@@ -1890,6 +1895,7 @@ body::-webkit-scrollbar{display:none;}
           <div class="stat-label bangla-font">মিশন</div>
         </div>
       </div>
+      
       <!-- আজকের ক্লাস সেকশন -->
       <div class="section-title">
         <h2 class="bangla-font">আজকের ক্লাস</h2>
@@ -1918,6 +1924,7 @@ body::-webkit-scrollbar{display:none;}
           </tbody>
         </table>
       </div>
+      
       <!-- সকল সাবজেক্ট সেকশন -->
       <div class="section-title">
         <h2 class="bangla-font">সব সাবজেক্ট</h2>
@@ -1934,6 +1941,19 @@ body::-webkit-scrollbar{display:none;}
         <a class="pill subject-link" href="#" data-name="অন্যান্য"><span><i class="fas fa-ellipsis-h"></i> <span class="bangla-font">অন্যান্য</span></span><span class="go bangla-font">খুলুন</span></a>
       </div>
     </main>
+    
+    <!-- Action Buttons (Comment and Submissions) -->
+    <div class="container">
+      <div class="action-buttons">
+        <button class="form-button bangla-font" id="form-button" style="display: none;">
+          <i class="fas fa-comment"></i> কমেন্ট করুন
+        </button>
+        <button class="submissions-button bangla-font" id="submissions-button" style="display: none;">
+          <i class="fas fa-list"></i> সাবমিশন দেখুন
+        </button>
+      </div>
+    </div>
+    
     <!-- OWNER & DESIGNER BLOCK -->
     <div class="owner-wrap">
       <div class="owner-message">
@@ -1946,11 +1966,13 @@ body::-webkit-scrollbar{display:none;}
         <span class="designer-name">SAHIBUL MUSA SIUM</span>
       </div>
     </div>
+    
     <!-- FOOTER -->
     <footer class="site-footer">
       © 2025 ALIM-25 BOM Admission Course 1.0 (BOM). All rights reserved.
     </footer>
   </div>
+  
   <!-- সাবজেক্ট পৃষ্ঠা (প্রথমে লুকানো) -->
   <div id="subject-page" style="display: none;">
     <header>
@@ -1990,6 +2012,7 @@ body::-webkit-scrollbar{display:none;}
       © 2025 ALIM25 BOM Admission Course 1.0 (BOM). All rights reserved.
     </footer>
   </div>
+  
   <!-- মিশন সাব-সাবজেক্ট পেজ (নতুন যোগ করা) -->
   <div id="mission-subjects-page" style="display: none;">
     <header>
@@ -2020,6 +2043,7 @@ body::-webkit-scrollbar{display:none;}
       © 2025 ALIM-25 BOM Admission Course 1.0 (BOM). All rights reserved.
     </footer>
   </div>
+  
   <!-- ওয়ার্নিং মোডাল -->
   <div id="warning-modal" class="warning-modal">
     <div class="modal-content">
@@ -2035,7 +2059,10 @@ body::-webkit-scrollbar{display:none;}
       </div>
     </div>
   </div>
+  
+  <!-- Notification -->
   <div id="notification" class="notification"></div>
+  
   <!-- Dashboard Modal -->
   <div id="dashboard-modal" class="dashboard-modal">
     <div class="modal-content">
@@ -2044,26 +2071,65 @@ body::-webkit-scrollbar{display:none;}
       </div>
     </div>
   </div>
+  
   <!-- Name Set Modal -->
-<div class="modal" id="nameModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="hideNameModal()">×</button>
-    <div class="modal-intro">
-      <h2 class="bangla-font">নাম সেট করুন</h2>
-      <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
-      <div class="warning-message bangla-font">
-        দয়া করে আপনার পূর্ণ নাম ব্যবহার করুন, যাতে অন্য কারো সাথে নামের কোনো মিল না হয়। একটি স্বতন্ত্র এবং ব্যতিক্রমী নাম নির্বাচন করুন, যেন আপনার মতামত এবং উত্তর সঠিকভাবে সনাক্ত করা যায়।
+  <div class="modal" id="nameModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="hideNameModal()">×</button>
+      <div class="modal-intro">
+        <h2 class="bangla-font">নাম সেট করুন</h2>
+        <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
+      </div>
+      <div class="form-section">
+        <form id="nameForm" onsubmit="saveName(event)">
+          <label class="bangla-font" for="userName">নাম</label>
+          <input type="text" id="userName" placeholder="আপনার পূর্ণ নাম লিখুন" required class="bangla-font">
+          <button type="submit" class="submit-button bangla-font">সেভ করুন</button>
+        </form>
       </div>
     </div>
-    <div class="form-section">
-      <form id="nameForm" onsubmit="saveName(event)">
-        <label class="bangla-font" for="userName">নাম</label>
-        <input type="text" id="userName" placeholder="আপনার পূর্ণ নাম লিখুন" required class="bangla-font">
-        <button type="submit" class="submit-button bangla-font">সেভ করুন</button>
-      </form>
+  </div>
+  
+  <!-- Form Modal -->
+  <div class="modal" id="formModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="hideForm()">×</button>
+      <div class="modal-intro">
+        <h2 class="bangla-font">আপনার মতামত আমাদের কাছে মূল্যবান</h2>
+        <p class="bangla-font">প্রিয় শিক্ষার্থী, আমাদের শিক্ষামূলক ওয়েবসাইট আপনাদের শিক্ষা ও জ্ঞানার্জনের পথকে আরও সহজ ও ফলপ্রসূ করতে প্রতিশ্রুতিবদ্ধ। নিচের ফর্মটি পূরণ করুন।</p>
+      </div>
+      <div class="form-section">
+        <form id="myForm" onsubmit="submitForm(event)">
+          <label class="bangla-font" for="name">নাম</label>
+          <input type="text" name="name" id="name" placeholder="আপনার নাম" required class="bangla-font" readonly><br>
+          <label class="bangla-font" for="batch">ব্যাচ নাম</label>
+          <select name="batch" id="batch" required class="bangla-font">
+            <option value="" disabled selected class="bangla-font">ব্যাচ নির্বাচন করুন</option>
+            <option value="Alim-25" class="bangla-font">আলিম-২৫</option>
+          </select><br>
+          <label class="bangla-font" for="message">মতামত/পরামর্শ/অভিযোগ</label>
+          <textarea name="message" id="message" placeholder="আপনার মতামত লিখুন" required class="bangla-font"></textarea>
+          <button type="submit" class="submit-button bangla-font" id="submitBtn">জমা দিন <span class="spinner"></span></button>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+  
+  <!-- Submissions Modal -->
+  <div class="modal" id="submissionsModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="hideSubmissions()">×</button>
+      <div class="modal-intro">
+        <h2 class="bangla-font">সাবমিশন তালিকা</h2>
+        <p class="bangla-font">এখানে সকল সাবমিশন দেখুন।</p>
+      </div>
+      <div id="submissions-list" class="submissions-list"></div>
+    </div>
+  </div>
+  
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage" style="display: none;">ফর্ম সফলভাবে জমা হয়েছে!</div>
+
   <script>
     // DOM হেল্পার ফাংশন
     function $(sel, root = document) { return root.querySelector(sel); }
@@ -2093,7 +2159,40 @@ body::-webkit-scrollbar{display:none;}
     // localStorage keys
     const LOGIN_EXPIRY_KEY = 'alim25_login_expiry';
     const IS_LOGGED_IN_KEY = 'alim25_is_logged_in';
-    const USER_ROLE_KEY = 'alim25_user_role'; // New: To store user role (owner or user)
+    const USER_ROLE_KEY = 'alim25_user_role';
+
+    // Dashboard storage keys
+    const STORAGE_KEYS = {
+      STUDENT_NAME: 'alim25_student_name',
+      JOIN_DATE: 'alim25_join_date',
+      LAST_LOGIN: 'alim25_last_login',
+      LAST_ACTIVITY: 'alim25_last_activity',
+      COMPLETED_ITEMS: 'alim25_completed_items',
+      NOTES: 'alim25_notes'
+    };
+
+    // Motivational quotes for dashboard
+    const motivationalQuotes = [
+      "প্রতিদিন একটি ক্লাস করুন, সাফল্য আপনার কাছে আসবে! 🌟",
+      "ছোট ছোট পদক্ষেপই বড় সাফল্যের পথ তৈরি করে! 💪",
+      "নিয়মিত পড়াশোনা আপনাকে লক্ষ্যের কাছে নিয়ে যাবে! 🚀",
+      "প্রতিটি ক্লাস আপনাকে এক ধাপ এগিয়ে নেয়! 🏆"
+    ];
+
+    // Badges for progress tracking
+    const badges = [
+      { name: 'Starter', threshold: 0, class: 'badge-starter', icon: '🏁' },
+      { name: 'Bronze Cup', threshold: 30, class: 'badge-bronze', icon: '🥉' },
+      { name: 'Silver Cup', threshold: 50, class: 'badge-silver', icon: '🥈' },
+      { name: 'Gold Cup', threshold: 65, class: 'badge-gold', icon: '🥇' },
+      { name: 'Platinum Trophy', threshold: 80, class: 'badge-platinum', icon: '🏆' }
+    ];
+
+    // Web App URL for form submissions
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEX1EuBWpSMlZ9zbXs1lAVQkOTdeV779SsD6SF6RllQGMYxcHJu30p5BPzW7O-PAbysg/exec";
+
+    // Form submission tracking
+    let storedName = localStorage.getItem('userName') || '';
 
     // পেজ উপরে স্ক্রল করার ফাংশন
     function scrollToTop() {
@@ -2126,7 +2225,7 @@ body::-webkit-scrollbar{display:none;}
     function logout() {
       localStorage.removeItem(LOGIN_EXPIRY_KEY);
       localStorage.removeItem(IS_LOGGED_IN_KEY);
-      localStorage.removeItem(USER_ROLE_KEY); // New: Remove user role
+      localStorage.removeItem(USER_ROLE_KEY);
       loginPage.style.display = 'flex';
       mainPage.style.display = 'none';
       subjectPage.style.display = 'none';
@@ -2156,14 +2255,26 @@ body::-webkit-scrollbar{display:none;}
     function checkPassword() {
       const password = $('#password').value;
       const errorElement = $('#error-message');
+      
       if (password === 'USERALIM25' || password === 'OWNERALIM25') {
         loginPage.style.display = 'none';
         mainPage.style.display = 'block';
         setLoginExpiry();
-        localStorage.setItem(USER_ROLE_KEY, password === 'OWNERALIM25' ? 'owner' : 'user'); // New: Set user role
+        localStorage.setItem(USER_ROLE_KEY, password === 'OWNERALIM25' ? 'owner' : 'user');
+        
+        // Show/hide buttons based on role
         if (isOwner()) {
-          $('#add-class-btn').style.display = 'inline-flex'; // Show Add Class button for owner
+          $('#add-class-btn').style.display = 'inline-flex';
+          $('#submissions-button').style.display = 'inline-flex';
+          $('#dashboard-btn').style.display = 'none';
+          $('#form-button').style.display = 'none';
+        } else {
+          $('#add-class-btn').style.display = 'none';
+          $('#submissions-button').style.display = 'none';
+          $('#dashboard-btn').style.display = 'inline-flex';
+          $('#form-button').style.display = 'inline-flex';
         }
+        
         showWarningModal();
         loadInitialData();
         scrollToTop();
@@ -2290,7 +2401,7 @@ body::-webkit-scrollbar{display:none;}
           <div class="class-title bangla-font"><i class="fas fa-info-circle"></i> ${r.title}</div>
           <div class="time"><i class="fas fa-clock"></i> ${r.time} | <span class="bangla-font">${formatDate(r.date)}</span></div>
           ${r.subject === 'ইক্সাম' && isExpired ? '<div class="exam-expiry-notice bangla-font"><i class="fas fa-exclamation-triangle"></i> পরীক্ষায় অংশগ্রহণ করার নির্দিষ্ট সময় শেষ হয়ে গেছে</div>' : ''}
-          <a class="btn" href="${r.link}" target="_blank"><i class="fas fa-play-circle"></i> <span class="bangla-font">${buttonText}</span></a>
+          <a class="btn" href="${r.link}" target="_blank" onclick="trackItem('${r.serial}', '${r.subject.includes('মিশন') ? 'mission' : r.subject === 'ইক্সাম' ? 'exam' : 'class'}')"><i class="fas fa-play-circle"></i> <span class="bangla-font">${buttonText}</span></a>
         `;
         root.appendChild(card);
         setTimeout(() => card.classList.add('visible'), 100);
@@ -2471,9 +2582,20 @@ body::-webkit-scrollbar{display:none;}
       if (checkLoginExpiry()) {
         loginPage.style.display = 'none';
         mainPage.style.display = 'block';
+        
+        // Set up button visibility based on role
         if (isOwner()) {
-          $('#add-class-btn').style.display = 'inline-flex'; // Show Add Class button for owner
+          $('#add-class-btn').style.display = 'inline-flex';
+          $('#submissions-button').style.display = 'inline-flex';
+          $('#dashboard-btn').style.display = 'none';
+          $('#form-button').style.display = 'none';
+        } else {
+          $('#add-class-btn').style.display = 'none';
+          $('#submissions-button').style.display = 'none';
+          $('#dashboard-btn').style.display = 'inline-flex';
+          $('#form-button').style.display = 'inline-flex';
         }
+        
         const data = await fetchData();
         allClasses = data.map(normalizeRow);
         const sortValue = $('#sort-classes').value;
@@ -2553,21 +2675,541 @@ body::-webkit-scrollbar{display:none;}
       });
     }
 
+    // =========================
+    // NEW FEATURES: DASHBOARD AND FORM SYSTEM
+    // =========================
+
+    // Dashboard functionality
+    function parseDate(dateStr) {
+      if (!dateStr) return new Date(0);
+      const [day, month, year] = dateStr.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function saveStudentData(name, joinDate, lastLogin, lastActivity, completedItems) {
+      localStorage.setItem(STORAGE_KEYS.STUDENT_NAME, name || 'শিক্ষার্থী');
+      localStorage.setItem(STORAGE_KEYS.JOIN_DATE, joinDate || getDateFromTimestamp(new Date().toString()));
+      localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, lastLogin || new Date().toISOString());
+      localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, lastActivity || new Date().toISOString());
+      localStorage.setItem(STORAGE_KEYS.COMPLETED_ITEMS, JSON.stringify(completedItems || []));
+    }
+
+    function getStudentData() {
+      return {
+        name: localStorage.getItem(STORAGE_KEYS.STUDENT_NAME) || 'শিক্ষার্থী',
+        joinDate: localStorage.getItem(STORAGE_KEYS.JOIN_DATE) || getDateFromTimestamp(new Date().toString()),
+        lastLogin: localStorage.getItem(STORAGE_KEYS.LAST_LOGIN) || new Date().toISOString(),
+        lastActivity: localStorage.getItem(STORAGE_KEYS.LAST_ACTIVITY) || new Date().toISOString(),
+        completedItems: JSON.parse(localStorage.getItem(STORAGE_KEYS.COMPLETED_ITEMS)) || []
+      };
+    }
+
+    // Tracking function
+    window.trackItem = function(id, type) {
+      if (isOwner()) return; // Owners don't track progress
+      
+      const studentData = getStudentData();
+      let completed = studentData.completedItems;
+      if (completed.includes(id)) {
+        return; // Already completed
+      }
+
+      if (type === 'class') {
+        let scrolled = false;
+        const scrollListener = () => { scrolled = true; };
+        window.addEventListener('scroll', scrollListener);
+
+        const minTime = 0; // seconds
+        const maxTime = 0; // 7 minutes in seconds
+        const randomTime = Math.random() * (maxTime - minTime) + minTime;
+
+        setTimeout(() => {
+          window.removeEventListener('scroll', scrollListener);
+          if (!scrolled) {
+            completed.push(id);
+            saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
+            showNotification(`${type} সম্পন্ন হয়েছে!`, false);
+          } else {
+            showNotification('পেজ স্ক্রল হয়েছে, সম্পন্ন মনে করা হয়নি।', true);
+          }
+        }, randomTime * 1000);
+      } else {
+        // For missions and exams, complete immediately
+        completed.push(id);
+        saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
+        showNotification(`${type} সম্পন্ন হয়েছে!`, false);
+      }
+    };
+
+    function getItemsFromAllClasses() {
+      const items = {
+        classes: [],
+        missions: [],
+        exams: []
+      };
+
+      allClasses.forEach(cls => {
+        const id = cls.serial.toString();
+        const item = { id: id, addDate: cls.date };
+        if (cls.subject.includes('মিশন')) {
+          items.missions.push(item);
+        } else if (cls.subject === 'ইক্সাম') {
+          items.exams.push(item);
+        } else {
+          items.classes.push(item);
+        }
+      });
+
+      return items;
+    }
+
+    function calculateStats(joinDate, completed) {
+      const joinDateObj = parseDate(formatDate(joinDate));
+      const items = getItemsFromAllClasses();
+
+      function filterItems(itemList, isAfter) {
+        return itemList.filter(item => {
+          const addDateObj = parseDate(formatDate(item.addDate));
+          return isAfter ? addDateObj >= joinDateObj : addDateObj < joinDateObj;
+        });
+      }
+
+      const afterClasses = filterItems(items.classes, true);
+      const beforeClasses = filterItems(items.classes, false);
+      const afterMissions = filterItems(items.missions, true);
+      const beforeMissions = filterItems(items.missions, false);
+      const afterExams = filterItems(items.exams, true);
+      const beforeExams = filterItems(items.exams, false);
+
+      const doneAfterClasses = afterClasses.filter(item => completed.includes(item.id)).length;
+      const doneBeforeClasses = beforeClasses.filter(item => completed.includes(item.id)).length;
+      const doneAfterMissions = afterMissions.filter(item => completed.includes(item.id)).length;
+      const doneBeforeMissions = beforeMissions.filter(item => completed.includes(item.id)).length;
+      const doneAfterExams = afterExams.filter(item => completed.includes(item.id)).length;
+      const doneBeforeExams = beforeExams.filter(item => completed.includes(item.id)).length;
+
+      const totalAll = items.classes.length + items.missions.length + items.exams.length;
+      const totalCompleted = completed.length;
+      const progress = totalAll > 0 ? (totalCompleted / totalAll) * 100 : 0;
+
+      return {
+        after: {
+          totalClasses: afterClasses.length,
+          doneClasses: doneAfterClasses,
+          pendingClasses: afterClasses.length - doneAfterClasses,
+          totalMissions: afterMissions.length,
+          doneMissions: doneAfterMissions,
+          pendingMissions: afterMissions.length - doneAfterMissions,
+          totalExams: afterExams.length,
+          doneExams: doneAfterExams,
+          pendingExams: afterExams.length - doneAfterExams
+        },
+        before: {
+          totalClasses: beforeClasses.length,
+          doneClasses: doneBeforeClasses,
+          pendingClasses: beforeClasses.length - doneBeforeClasses,
+          totalMissions: beforeMissions.length,
+          doneMissions: doneBeforeMissions,
+          pendingMissions: beforeMissions.length - doneBeforeMissions,
+          totalExams: beforeExams.length,
+          doneExams: doneBeforeExams,
+          pendingExams: beforeExams.length - doneBeforeExams
+        },
+        progress: progress.toFixed(1)
+      };
+    }
+
+    function getCurrentBadge(progress) {
+      for (let i = badges.length - 1; i >= 0; i--) {
+        if (progress >= badges[i].threshold) {
+          return badges[i];
+        }
+      }
+      return badges[0];
+    }
+
+    function saveNotes(notes) {
+      localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+    }
+
+    function getNotes() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
+    }
+
+    function renderNotes() {
+      const notesList = $('#notes-list');
+      const notes = getNotes();
+      notesList.innerHTML = '';
+      notes.forEach((note, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${note}</span>
+          <button onclick="deleteNote(${index})">মুছে ফেলুন</button>
+        `;
+        if (notesList) notesList.appendChild(li);
+      });
+    }
+
+    window.deleteNote = function(index) {
+      let notes = getNotes();
+      notes.splice(index, 1);
+      saveNotes(notes);
+      renderNotes();
+    };
+
+    function showDashboard() {
+      if (isOwner()) {
+        showNotification("এডমিনদের জন্য ড্যাশবোর্ড সুবিধা নেই", true);
+        return;
+      }
+
+      const studentData = getStudentData();
+      const isNewUser = !localStorage.getItem(STORAGE_KEYS.STUDENT_NAME);
+      const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+      const stats = calculateStats(studentData.joinDate, studentData.completedItems);
+      const currentBadge = getCurrentBadge(stats.progress);
+      const lastActivityDate = new Date(studentData.lastActivity);
+      const daysSinceActivity = (new Date() - lastActivityDate) / (1000 * 60 * 60 * 24);
+
+      const dashboardBody = $('#dashboard-body');
+      dashboardBody.innerHTML = `
+        ${isNewUser ? `
+          <div class="alert-box success bangla-font">
+            <i class="fas fa-info-circle"></i> আপনার নাম লিখুন এবং ড্যাশবোর্ড কাস্টমাইজ করুন!
+          </div>
+          <form class="name-input-form">
+            <input type="text" id="student-name-input" placeholder="আপনার নাম লিখুন" class="bangla-font">
+            <button type="submit" class="bangla-font">নাম সংরক্ষণ করুন</button>
+          </form>
+        ` : `
+          <header class="modal-header bangla-font">
+            <h2>স্বাগতম, ${studentData.name}!</h2>
+            <div class="badge-current ${currentBadge.class}" id="current-badge">${currentBadge.icon} ${currentBadge.name}</div>
+            <div id="close-btn" class="close-btn">✕</div>
+          </header>
+
+          <section class="motivation">
+            <p id="motivation-text" class="bangla-font">${randomQuote}</p>
+          </section>
+
+          <section class="stats after-join bangla-font">
+            <h2>জয়েন-এর পর</h2>
+            <div class="stats-grid">
+              <div class="stat-item" id="card-classes">
+                <h3>ক্লাস</h3>
+                <p>মোট: <span id="after-total-classes">${stats.after.totalClasses}</span></p>
+                <p>করা হয়েছে: <span id="after-done-classes">${stats.after.doneClasses}</span></p>
+                <p>বাকি আছে: <span id="after-pending-classes">${stats.after.pendingClasses}</span></p>
+              </div>
+              <div class="stat-item" id="card-missions">
+                <h3>মিশন</h3>
+                <p>মোট: <span id="after-total-missions">${stats.after.totalMissions}</span></p>
+                <p>সম্পন্ন হয়েছে: <span id="after-done-missions">${stats.after.doneMissions}</span></p>
+                <p>বাকি আছে: <span id="after-pending-missions">${stats.after.pendingMissions}</span></p>
+              </div>
+              <div class="stat-item" id="card-exams">
+                <h3>পরীক্ষা</h3>
+                <p>মোট: <span id="after-total-exams">${stats.after.totalExams}</span></p>
+                <p>দেওয়া হয়েছে: <span id="after-done-exams">${stats.after.doneExams}</span></p>
+                <p>বাকি আছে: <span id="after-pending-exams">${stats.after.pendingExams}</span></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="stats before-join bangla-font">
+            <h2>জয়েন-এর আগে</h2>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <h3>ক্লাস</h3>
+                <p>মোট: <span id="before-total-classes">${stats.before.totalClasses}</span></p>
+                <p>করা হয়েছে: <span id="before-done-classes">${stats.before.doneClasses}</span></p>
+                <p>বাকি আছে: <span id="before-pending-classes">${stats.before.pendingClasses}</span></p>
+              </div>
+              <div class="stat-item">
+                <h3>মিশন</h3>
+                <p>মোট: <span id="before-total-missions">${stats.before.totalMissions}</span></p>
+                <p>সম্পন্ন হয়েছে: <span id="before-done-missions">${stats.before.doneMissions}</span></p>
+                <p>বাকি আছে: <span id="before-pending-missions">${stats.before.pendingMissions}</span></p>
+              </div>
+              <div class="stat-item">
+                <h3>পরীক্ষা</h3>
+                <p>মোট: <span id="before-total-exams">${stats.before.totalExams}</span></p>
+                <p>দেওয়া হয়েছে: <span id="before-done-exams">${stats.before.doneExams}</span></p>
+                <p>বাকি আছে: <span id="before-pending-exams">${stats.before.pendingExams}</span></p>
+              </div>
+            </div>
+          </section>
+
+          <section id="alarms" class="alarms bangla-font"></section>
+
+          <section class="progress-section bangla-font">
+            <h3>সামগ্রিক অগ্রগতি</h3>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" style="width: ${stats.progress}%"></div>
+            </div>
+            <p>${stats.progress}%</p>
+          </section>
+
+          <div class="badges-dropdown bangla-font">
+            <label for="badges-select">ব্যাজসমূহ:</label>
+            <select id="badges-select">
+              ${badges.map(badge => `
+                <option ${stats.progress >= badge.threshold ? '' : 'disabled'}>${badge.icon} ${badge.name} ${stats.progress >= badge.threshold ? '(প্রাপ্ত)' : '(লক)'}</option>
+              `).join('')}
+            </select>
+          </div>
+
+          <section class="notes-section bangla-font">
+            <h3>আমার নোটস</h3>
+            <textarea id="note-input" placeholder="নতুন নোট লিখুন..."></textarea>
+            <button id="add-note-btn">নোট যোগ করুন</button>
+            <ul id="notes-list"></ul>
+          </section>
+        `}
+      `;
+
+      if (isNewUser) {
+        const form = dashboardBody.querySelector('.name-input-form');
+        if (form) {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = $('#student-name-input');
+            if (nameInput) {
+              const nameValue = nameInput.value.trim();
+              if (nameValue) {
+                saveStudentData(nameValue, getDateFromTimestamp(new Date().toString()), new Date().toISOString(), new Date().toISOString(), []);
+                showNotification('নাম সফলভাবে সংরক্ষিত হয়েছে!', false);
+                showDashboard();
+              } else {
+                showNotification('অনুগ্রহ করে একটি বৈধ নাম লিখুন', true);
+              }
+            }
+          });
+        }
+      } else {
+        // Update last login
+        localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, new Date().toISOString());
+
+        // Alarms
+        const alarms = $('#alarms');
+        if (alarms) {
+          if (stats.before.pendingClasses + stats.before.pendingMissions + stats.before.pendingExams > 0) {
+            alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের আগের ক্লাস, মিশন এবং পরীক্ষাগুলো নিজ দায়িত্বে সম্পন্ন করুন যতক্ষণ না সবগুলো শেষ হয়।</div>`;
+          }
+          if (daysSinceActivity > 7) {
+            alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ সপ্তাহের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে সপ্তাহের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
+          }
+          if (daysSinceActivity > 30) {
+            alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ মাসের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে মাসের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
+          }
+          if (stats.progress < 10 && !isNewUser) {
+            alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনার অগ্রগতি খুব কম! নিয়মিত ক্লাস করে অগ্রসর হোন।</div>`;
+          }
+          if (stats.after.pendingClasses > 5) {
+            alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের পরের ক্লাসগুলোতে অনেক বাকি! দ্রুত সম্পন্ন করুন।</div>`;
+          }
+        }
+
+        // Close button
+        const closeBtn = $('#close-btn');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+            const dashboardModal = $('#dashboard-modal');
+            dashboardModal.classList.remove('show');
+          });
+        }
+
+        // Notes functionality
+        renderNotes();
+        const addNoteBtn = $('#add-note-btn');
+        const noteInput = $('#note-input');
+        if (addNoteBtn && noteInput) {
+          addNoteBtn.addEventListener('click', () => {
+            const noteText = noteInput.value.trim();
+            if (noteText) {
+              let notes = getNotes();
+              notes.push(noteText);
+              saveNotes(notes);
+              renderNotes();
+              noteInput.value = '';
+              showNotification('নোট যোগ করা হয়েছে!', false);
+            } else {
+              showNotification('অনুগ্রহ করে নোট লিখুন', true);
+            }
+          });
+        }
+      }
+
+      const dashboardModal = $('#dashboard-modal');
+      dashboardModal.classList.add('show');
+    }
+
+    // Form functionality
+    function showNameModal(){ $('#nameModal').style.display='flex'; }
+    function hideNameModal(){ $('#nameModal').style.display='none'; }
+
+    function saveName(event){
+      event.preventDefault();
+      const name = $('#userName').value.trim();
+      if (name) {
+        localStorage.setItem('userName', name);
+        storedName = name;
+        hideNameModal();
+        showForm();
+      } else {
+        showNotification("নাম লিখুন!", true);
+      }
+    }
+
+    function handleFormClick() {
+      if (isOwner()) {
+        showNotification("এডমিনদের জন্য কমেন্ট সুবিধা নেই", true);
+        return;
+      }
+      
+      if (!storedName) {
+        showNameModal();
+      } else {
+        showForm();
+      }
+    }
+
+    function showForm(){ 
+      $('#formModal').style.display='flex'; 
+      $('#myForm').reset(); 
+      $('#name').value = storedName;
+    }
+
+    function hideForm(){ $('#formModal').style.display='none'; }
+
+    function showSubmissions(){ 
+      if (!isOwner()) {
+        showNotification("শুধুমাত্র এডমিনরা সাবমিশন দেখতে পারবেন", true);
+        return;
+      }
+      $('#submissionsModal').style.display='flex'; 
+      loadSubmissions(); 
+    }
+
+    function hideSubmissions(){ $('#submissionsModal').style.display='none'; }
+
+    function submitForm(event){
+      event.preventDefault();
+      const submitBtn = $('#submitBtn');
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      const form = $('#myForm');
+      const data = {
+        name: form.name.value.trim(),
+        batch: form.batch.value,
+        message: form.message.value.trim()
+      };
+
+      fetch(WEB_APP_URL,{
+        method:'POST',
+        body:JSON.stringify(data)
+      })
+      .then(res=>res.text())
+      .then(txt=>{
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        if(txt.startsWith("Success")){
+          form.reset(); hideForm(); 
+          showNotification("ফর্ম সফলভাবে জমা হয়েছে!", false);
+        }else{
+          showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
+        }
+      })
+      .catch(()=>{
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
+      });
+    }
+
+    function loadSubmissions() {
+      fetch(WEB_APP_URL + '?action=getSubmissions')
+        .then(res => res.json())
+        .then(data => {
+          const list = $('#submissions-list');
+          if (list) {
+            list.innerHTML = '';
+            data.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'submission-item';
+              div.innerHTML = `
+                <div class="submission-name bangla-font">${item.name}</div>
+                <div class="submission-batch bangla-font">ব্যাচ: ${item.batch}</div>
+                <div class="submission-message bangla-font">${item.message}</div>
+                ${item.reply ? `<div class="submission-reply bangla-font">উত্তর: ${item.reply}</div>` : ''}
+                <div class="submission-time bangla-font">${item.time}</div>
+              `;
+              list.appendChild(div);
+            });
+          }
+        })
+        .catch(() => showNotification("সাবমিশন লোড হয়নি! আবার চেষ্টা করুন।", true));
+    }
+
+    // Set up event listeners for new features
+    function setupNewFeatures() {
+      // Dashboard button
+      const dashboardBtn = $('#dashboard-btn');
+      if (dashboardBtn) {
+        dashboardBtn.addEventListener('click', showDashboard);
+      }
+
+      // Form button
+      const formButton = $('#form-button');
+      if (formButton) {
+        formButton.addEventListener('click', handleFormClick);
+      }
+
+      // Submissions button
+      const submissionsButton = $('#submissions-button');
+      if (submissionsButton) {
+        submissionsButton.addEventListener('click', showSubmissions);
+      }
+
+      // Modal close events
+      window.addEventListener('click',(e)=>{ 
+        if(e.target==$('#nameModal')) hideNameModal(); 
+        if(e.target==$('#formModal')) hideForm(); 
+        if(e.target==$('#submissionsModal')) hideSubmissions(); 
+        if(e.target==$('#dashboard-modal')) {
+          $('#dashboard-modal').classList.remove('show');
+        }
+      });
+    }
+
     // ইনিশিয়ালাইজেশন
     function init() {
       if (checkLoginExpiry()) {
         loginPage.style.display = 'none';
         mainPage.style.display = 'block';
+        
+        // Set up button visibility based on role
         if (isOwner()) {
-          $('#add-class-btn').style.display = 'inline-flex'; // Show Add Class button for owner
+          $('#add-class-btn').style.display = 'inline-flex';
+          $('#submissions-button').style.display = 'inline-flex';
+          $('#dashboard-btn').style.display = 'none';
+          $('#form-button').style.display = 'none';
+        } else {
+          $('#add-class-btn').style.display = 'none';
+          $('#submissions-button').style.display = 'none';
+          $('#dashboard-btn').style.display = 'inline-flex';
+          $('#form-button').style.display = 'inline-flex';
         }
+        
         loadInitialData();
       }
+      
       setupSearch();
       setupSort();
       setupSubjectLinks();
       setupBackButton();
       setupSortClasses();
+      setupNewFeatures();
 
       // ফেড-ইন অ্যানিমেশন
       const fadeInElements = $all('.fade-in');
@@ -2585,566 +3227,5 @@ body::-webkit-scrollbar{display:none;}
     // ডকুমেন্ট লোড হলে ইনিশিয়ালাইজ
     document.addEventListener('DOMContentLoaded', init);
   </script>
-<script>
-/* Dashboard Script */
-const STORAGE_KEYS = {
-  STUDENT_NAME: 'dakhil26_student_name',
-  JOIN_DATE: 'dakhil26_join_date',
-  LAST_LOGIN: 'dakhil26_last_login',
-  LAST_ACTIVITY: 'dakhil26_last_activity',
-  COMPLETED_ITEMS: 'dakhil26_completed_items',
-  NOTES: 'dakhil26_notes'
-};
-
-const motivationalQuotes = [
-  "প্রতিদিনের ক্লাস প্রতিদিন করুন, সাফল্য আপনার কাছে আসবে! 🌟",
-  "ছোট ছোট পদক্ষেপই বড় সাফল্যের পথ তৈরি করে! 💪",
-  "নিয়মিত পড়াশোনা আপনাকে লক্ষ্যের কাছে নিয়ে যাবে! 🚀",
-  "প্রতিটি ক্লাস আপনাকে এক ধাপ এগিয়ে নেয়! 🏆"
-];
-
-const badges = [
-  { name: 'Starter', threshold: 0, class: 'badge-starter', icon: '🏁' },
-  { name: 'Bronze Cup', threshold: 30, class: 'badge-bronze', icon: '🥉' },
-  { name: 'Silver Cup', threshold: 50, class: 'badge-silver', icon: '🥈' },
-  { name: 'Gold Cup', threshold: 65, class: 'badge-gold', icon: '🥇' },
-  { name: 'Platinum Trophy', threshold: 80, class: 'badge-platinum', icon: '🏆' }
-];
-
-function parseDate(dateStr) {
-  if (!dateStr) return new Date(0);
-  const [day, month, year] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
-
-function saveStudentData(name, joinDate, lastLogin, lastActivity, completedItems) {
-  localStorage.setItem(STORAGE_KEYS.STUDENT_NAME, name || 'শিক্ষার্থী');
-  localStorage.setItem(STORAGE_KEYS.JOIN_DATE, joinDate || getTodayDate());
-  localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, lastLogin || new Date().toISOString());
-  localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, lastActivity || new Date().toISOString());
-  localStorage.setItem(STORAGE_KEYS.COMPLETED_ITEMS, JSON.stringify(completedItems || []));
-}
-
-function getStudentData() {
-  return {
-    name: localStorage.getItem(STORAGE_KEYS.STUDENT_NAME) || 'শিক্ষার্থী',
-    joinDate: localStorage.getItem(STORAGE_KEYS.JOIN_DATE) || getTodayDate(),
-    lastLogin: localStorage.getItem(STORAGE_KEYS.LAST_LOGIN) || new Date().toISOString(),
-    lastActivity: localStorage.getItem(STORAGE_KEYS.LAST_ACTIVITY) || new Date().toISOString(),
-    completedItems: JSON.parse(localStorage.getItem(STORAGE_KEYS.COMPLETED_ITEMS)) || []
-  };
-}
-
-// Tracking function
-window.trackItem = function(id, type) {
-  const studentData = getStudentData();
-  let completed = studentData.completedItems;
-  if (completed.includes(id)) {
-    return; // Already completed
-  }
-
-  if (type === 'class') {
-    let scrolled = false;
-    const scrollListener = () => { scrolled = true; };
-    window.addEventListener('scroll', scrollListener);
-
-    const minTime = 0; // seconds
-    const maxTime = 0; // 7 minutes in seconds
-    const randomTime = Math.random() * (maxTime - minTime) + minTime;
-
-    setTimeout(() => {
-      window.removeEventListener('scroll', scrollListener);
-      if (!scrolled) {
-        completed.push(id);
-        saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
-        showNotification(`${type} সম্পন্ন হয়েছে!`, false);
-      } else {
-        showNotification('পেজ স্ক্রল হয়েছে, সম্পন্ন মনে করা হয়নি।', true);
-      }
-    }, randomTime * 1000);
-  } else {
-    // For missions and exams, complete immediately
-    completed.push(id);
-    saveStudentData(studentData.name, studentData.joinDate, new Date().toISOString(), new Date().toISOString(), completed);
-    showNotification(`${type} সম্পন্ন হয়েছে!`, false);
-  }
-};
-
-function getItemsFromAllClasses() {
-  const items = {
-    classes: [],
-    missions: [],
-    exams: []
-  };
-
-  allClasses.forEach(cls => {
-    const idPrefix = cls.type === 'mission' ? 'm' : cls.type === 'exam' ? 'e' : 'c';
-    const trackId = idPrefix + cls.globalId;
-    const item = { id: trackId, addDate: cls.date };
-    if (cls.type === 'mission') {
-      items.missions.push(item);
-    } else if (cls.type === 'exam') {
-      items.exams.push(item);
-    } else {
-      items.classes.push(item);
-    }
-  });
-
-  return items;
-}
-
-function calculateStats(joinDate, completed) {
-  const joinDateObj = parseDate(joinDate);
-  const items = getItemsFromAllClasses();
-
-  function filterItems(itemList, isAfter) {
-    return itemList.filter(item => {
-      const addDateObj = parseDate(item.addDate);
-      return isAfter ? addDateObj >= joinDateObj : addDateObj < joinDateObj;
-    });
-  }
-
-  const afterClasses = filterItems(items.classes, true);
-  const beforeClasses = filterItems(items.classes, false);
-  const afterMissions = filterItems(items.missions, true);
-  const beforeMissions = filterItems(items.missions, false);
-  const afterExams = filterItems(items.exams, true);
-  const beforeExams = filterItems(items.exams, false);
-
-  const doneAfterClasses = afterClasses.filter(item => completed.includes(item.id)).length;
-  const doneBeforeClasses = beforeClasses.filter(item => completed.includes(item.id)).length;
-  const doneAfterMissions = afterMissions.filter(item => completed.includes(item.id)).length;
-  const doneBeforeMissions = beforeMissions.filter(item => completed.includes(item.id)).length;
-  const doneAfterExams = afterExams.filter(item => completed.includes(item.id)).length;
-  const doneBeforeExams = beforeExams.filter(item => completed.includes(item.id)).length;
-
-  const totalAll = items.classes.length + items.missions.length + items.exams.length;
-  const totalCompleted = completed.length;
-  const progress = totalAll > 0 ? (totalCompleted / totalAll) * 100 : 0;
-
-  return {
-    after: {
-      totalClasses: afterClasses.length,
-      doneClasses: doneAfterClasses,
-      pendingClasses: afterClasses.length - doneAfterClasses,
-      totalMissions: afterMissions.length,
-      doneMissions: doneAfterMissions,
-      pendingMissions: afterMissions.length - doneAfterMissions,
-      totalExams: afterExams.length,
-      doneExams: doneAfterExams,
-      pendingExams: afterExams.length - doneAfterExams
-    },
-    before: {
-      totalClasses: beforeClasses.length,
-      doneClasses: doneBeforeClasses,
-      pendingClasses: beforeClasses.length - doneBeforeClasses,
-      totalMissions: beforeMissions.length,
-      doneMissions: doneBeforeMissions,
-      pendingMissions: beforeMissions.length - doneBeforeMissions,
-      totalExams: beforeExams.length,
-      doneExams: doneBeforeExams,
-      pendingExams: beforeExams.length - doneBeforeExams
-    },
-    progress: progress.toFixed(1)
-  };
-}
-
-function getCurrentBadge(progress) {
-  for (let i = badges.length - 1; i >= 0; i--) {
-    if (progress >= badges[i].threshold) {
-      return badges[i];
-    }
-  }
-  return badges[0];
-}
-
-function saveNotes(notes) {
-  localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
-}
-
-function getNotes() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
-}
-
-function renderNotes() {
-  const notesList = $('#notes-list');
-  const notes = getNotes();
-  notesList.innerHTML = '';
-  notes.forEach((note, index) => {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <span>${note}</span>
-      <button onclick="deleteNote(${index})">মুছে ফেলুন</button>
-    `;
-    notesList.appendChild(li);
-  });
-}
-
-window.deleteNote = function(index) {
-  let notes = getNotes();
-  notes.splice(index, 1);
-  saveNotes(notes);
-  renderNotes();
-};
-
-function showDashboard() {
-  const studentData = getStudentData();
-  const isNewUser = !localStorage.getItem(STORAGE_KEYS.STUDENT_NAME);
-  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-  const stats = calculateStats(studentData.joinDate, studentData.completedItems);
-  const currentBadge = getCurrentBadge(stats.progress);
-  const lastActivityDate = new Date(studentData.lastActivity);
-  const daysSinceActivity = (new Date() - lastActivityDate) / (1000 * 60 * 60 * 24);
-
-  const dashboardBody = $('#dashboard-body');
-  dashboardBody.innerHTML = `
-    ${isNewUser ? `
-      <div class="alert-box success bangla-font">
-        <i class="fas fa-info-circle"></i> আপনার নাম লিখুন এবং ড্যাশবোর্ড কাস্টমাইজ করুন!
-      </div>
-      <form class="name-input-form">
-        <input type="text" id="student-name-input" placeholder="আপনার নাম লিখুন" class="bangla-font">
-        <button type="submit" class="bangla-font">নাম সংরক্ষণ করুন</button>
-      </form>
-    ` : `
-      <header class="modal-header bangla-font">
-        <h2>স্বাগতম, ${studentData.name}!</h2>
-        <div class="badge-current ${currentBadge.class}" id="current-badge">${currentBadge.icon} ${currentBadge.name}</div>
-        <div id="close-btn" class="close-btn">✕</div>
-      </header>
-
-      <section class="motivation">
-        <p id="motivation-text" class="bangla-font">${randomQuote}</p>
-      </section>
-
-      <section class="stats after-join bangla-font">
-        <h2>জয়েন-এর পর</h2>
-        <div class="cards">
-          <div class="card" id="card-classes">
-            <h3>ক্লাস</h3>
-            <p>মোট: <span id="after-total-classes">${stats.after.totalClasses}</span></p>
-            <p>করা হয়েছে: <span id="after-done-classes">${stats.after.doneClasses}</span></p>
-            <p>বাকি আছে: <span id="after-pending-classes">${stats.after.pendingClasses}</span></p>
-          </div>
-          <div class="card" id="card-missions">
-            <h3>মিশন</h3>
-            <p>মোট: <span id="after-total-missions">${stats.after.totalMissions}</span></p>
-            <p>সম্পন্ন হয়েছে: <span id="after-done-missions">${stats.after.doneMissions}</span></p>
-            <p>বাকি আছে: <span id="after-pending-missions">${stats.after.pendingMissions}</span></p>
-          </div>
-          <div class="card" id="card-exams">
-            <h3>পরীক্ষা</h3>
-            <p>মোট: <span id="after-total-exams">${stats.after.totalExams}</span></p>
-            <p>দেওয়া হয়েছে: <span id="after-done-exams">${stats.after.doneExams}</span></p>
-            <p>বাকি আছে: <span id="after-pending-exams">${stats.after.pendingExams}</span></p>
-          </div>
-        </div>
-      </section>
-
-      <section class="stats before-join bangla-font">
-        <h2>জয়েন-এর আগে</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>ক্লাস</h3>
-            <p>মোট: <span id="before-total-classes">${stats.before.totalClasses}</span></p>
-            <p>করা হয়েছে: <span id="before-done-classes">${stats.before.doneClasses}</span></p>
-            <p>বাকি আছে: <span id="before-pending-classes">${stats.before.pendingClasses}</span></p>
-          </div>
-          <div class="card">
-            <h3>মিশন</h3>
-            <p>মোট: <span id="before-total-missions">${stats.before.totalMissions}</span></p>
-            <p>সম্পন্ন হয়েছে: <span id="before-done-missions">${stats.before.doneMissions}</span></p>
-            <p>বাকি আছে: <span id="before-pending-missions">${stats.before.pendingMissions}</span></p>
-          </div>
-          <div class="card">
-            <h3>পরীক্ষা</h3>
-            <p>মোট: <span id="before-total-exams">${stats.before.totalExams}</span></p>
-            <p>দেওয়া হয়েছে: <span id="before-done-exams">${stats.before.doneExams}</span></p>
-            <p>বাকি আছে: <span id="before-pending-exams">${stats.before.pendingExams}</span></p>
-          </div>
-        </div>
-      </section>
-
-      <section id="alarms" class="alarms bangla-font"></section>
-
-      <section class="progress-section bangla-font">
-        <h3>সম্মক অগ্রগতি</h3>
-        <div class="progress-bar">
-          <div class="progress-bar-fill" style="width: ${stats.progress}%"></div>
-        </div>
-        <p>${stats.progress}%</p>
-      </section>
-
-      <div class="badges-dropdown bangla-font">
-        <label for="badges-select">ব্যাজসমূহ:</label>
-        <select id="badges-select">
-          ${badges.map(badge => `
-            <option ${stats.progress >= badge.threshold ? '' : 'disabled'}>${badge.icon} ${badge.name} ${stats.progress >= badge.threshold ? '(প্রাপ্ত)' : '(লক)'}</option>
-          `).join('')}
-        </select>
-      </div>
-
-      <section class="notes-section bangla-font">
-        <h3>আমার নোটস</h3>
-        <textarea id="note-input" placeholder="নতুন নোট লিখুন..."></textarea>
-        <button id="add-note-btn">নোট যোগ করুন</button>
-        <ul id="notes-list"></ul>
-      </section>
-    `}
-  `;
-
-  if (isNewUser) {
-    const form = dashboardBody.querySelector('.name-input-form');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nameInput = $('#student-name-input').value.trim();
-      if (nameInput) {
-        saveStudentData(nameInput, getTodayDate(), new Date().toISOString(), new Date().toISOString(), []);
-        showNotification('নাম সফলভাবে সংরক্ষিত হয়েছে!', false);
-        showDashboard();
-      } else {
-        showNotification('অনুগ্রহ করে একটি বৈধ নাম লিখুন', true);
-      }
-    });
-  } else {
-    // Update last login
-    localStorage.setItem(STORAGE_KEYS.LAST_LOGIN, new Date().toISOString());
-
-    // Alarms
-    const alarms = $('#alarms');
-    if (stats.before.pendingClasses + stats.before.pendingMissions + stats.before.pendingExams > 0) {
-      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের আগের ক্লাস, মিশন এবং পরীক্ষাগুলো নিজ দায়িত্বে সম্পন্ন করুন যতক্ষণ না সবগুলো শেষ হয়।</div>`;
-    }
-    if (daysSinceActivity > 7) {
-      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ সপ্তাহের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে সপ্তাহের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
-    }
-    if (daysSinceActivity > 30) {
-      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনি টানা ১ মাসের বেশি ক্লাস করেননি! আজকের ক্লাস বক্সে গিয়ে মাসের ক্লাস সিলেক্ট করে প্রতিটা ক্লাস করে নিন।</div>`;
-    }
-    if (stats.progress < 10 && !isNewUser) {
-      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> আপনার অগ্রগতি খুব কম! নিয়মিত ক্লাস করে অগ্রসর হোন।</div>`;
-    }
-    if (stats.after.pendingClasses > 5) {
-      alarms.innerHTML += `<div class="alert-box warning"><i class="fas fa-exclamation-triangle"></i> জয়েনের পরের ক্লাসগুলোতে অনেক বাকি! দ্রুত সম্পন্ন করুন।</div>`;
-    }
-
-    // Close button
-    const closeBtn = $('#close-btn');
-    closeBtn.addEventListener('click', () => {
-      const dashboardModal = $('#dashboard-modal');
-      dashboardModal.classList.remove('show');
-    });
-
-    // Notes functionality
-    renderNotes();
-    const addNoteBtn = $('#add-note-btn');
-    addNoteBtn.addEventListener('click', () => {
-      const noteInput = $('#note-input');
-      const noteText = noteInput.value.trim();
-      if (noteText) {
-        let notes = getNotes();
-        notes.push(noteText);
-        saveNotes(notes);
-        renderNotes();
-        noteInput.value = '';
-        showNotification('নোট যোগ করা হয়েছে!', false);
-      } else {
-        showNotification('অনুগ্রহ করে নোট লিখুন', true);
-      }
-    });
-  }
-
-  const dashboardModal = $('#dashboard-modal');
-  dashboardModal.classList.add('show');
-}
-
-const dashboardBtn = $('#dashboard-btn');
-dashboardBtn.addEventListener('click', () => {
-  showDashboard();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (checkLoginExpiry()) {
-    loginPage.style.display = 'none';
-    mainPage.style.display = 'block';
-    loadInitialData();
-    showAddClassButton();
-    showDashboardButton();
-  } else {
-    loginPage.style.display = 'flex';
-    mainPage.style.display = 'none';
-    subjectPage.style.display = 'none';
-  }
-  initializeEventListeners();
-});
-</script>
-<script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEX1EuBWpSMlZ9zbXs1lAVQkOTdeV779SsD6SF6RllQGMYxcHJu30p5BPzW7O-PAbysg/exec";
-
-function $(sel){ return document.querySelector(sel); }
-
-function showNotification(message, isError=false){
-  const notification = $('#notification');
-  notification.innerHTML = `<i class="${isError?'fas fa-exclamation-circle':'fas fa-check-circle'}"></i> <span class="bangla-font">${message}</span>`;
-  notification.className=`notification ${isError?'error':'success'}`;
-  notification.classList.add('show');
-  setTimeout(()=>notification.classList.remove('show'),3000);
-}
-
-let storedName = localStorage.getItem('userName') || '';
-
-function showNameModal(){ $('#nameModal').style.display='flex'; }
-function hideNameModal(){ $('#nameModal').style.display='none'; }
-
-function saveName(event){
-  event.preventDefault();
-  const name = $('#userName').value.trim();
-  if (name) {
-    localStorage.setItem('userName', name);
-    storedName = name;
-    hideNameModal();
-    showForm();
-  } else {
-    showNotification("নাম লিখুন!", true);
-  }
-}
-
-function handleFormClick() {
-  if (!storedName) {
-    showNameModal();
-  } else {
-    showForm();
-  }
-}
-
-function showForm(){ 
-  $('#formModal').style.display='flex'; 
-  $('#myForm').reset(); 
-  $('#name').value = storedName;
-}
-
-function hideForm(){ $('#formModal').style.display='none'; }
-
-function showSubmissions(){ 
-  $('#submissionsModal').style.display='flex'; 
-  loadSubmissions(); 
-}
-
-function hideSubmissions(){ $('#submissionsModal').style.display='none'; }
-
-function submitForm(event){
-  event.preventDefault();
-  const submitBtn = $('#submitBtn');
-  submitBtn.classList.add('loading');
-  submitBtn.disabled = true;
-  const form = $('#myForm');
-  const data = {
-    name: form.name.value.trim(),
-    batch: form.batch.value,
-    message: form.message.value.trim()
-  };
-
-  fetch(WEB_APP_URL,{
-    method:'POST',
-    body:JSON.stringify(data)
-  })
-  .then(res=>res.text())
-  .then(txt=>{
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
-    if(txt.startsWith("Success")){
-      form.reset(); hideForm(); showSuccessMessage();
-    }else{
-      showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
-    }
-  })
-  .catch(()=>{
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
-    showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
-  });
-}
-
-function showSuccessMessage(){
-  const successMessage = $('#successMessage');
-  successMessage.style.display='block';
-  setTimeout(()=>successMessage.style.display='none',3000);
-}
-
-function loadSubmissions() {
-  fetch(WEB_APP_URL + '?action=getSubmissions')
-    .then(res => res.json())
-    .then(data => {
-      const list = $('#submissions-list');
-      list.innerHTML = '';
-      data.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'submission-item';
-        div.innerHTML = `
-          <div class="submission-name bangla-font">${item.name}</div>
-          <div class="submission-batch bangla-font">ব্যাচ: ${item.batch}</div>
-          <div class="submission-message bangla-font">${item.message}</div>
-          ${item.reply ? `<div class="submission-reply bangla-font">উত্তর: ${item.reply}</div>` : ''}
-          <div class="submission-time bangla-font">${item.time}</div>
-        `;
-        list.appendChild(div);
-      });
-    })
-    .catch(() => showNotification("সাবমিশন লোড হয়নি! আবার চেষ্টা করুন।", true));
-}
-
-$('#form-button').addEventListener('click', handleFormClick);
-$('#submissions-button').addEventListener('click',showSubmissions);
-window.addEventListener('click',(e)=>{ 
-  if(e.target==$('#nameModal')) hideNameModal(); 
-  if(e.target==$('#formModal')) hideForm(); 
-  if(e.target==$('#submissionsModal')) hideSubmissions(); 
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Notice bar code
-  const noticeBar = document.querySelector('.notice-bar');
-  const noticeSpan = document.querySelector('.notice-bar span');
-  
-  if (noticeBar && noticeSpan) {
-    noticeBar.style.visibility = 'visible';
-    noticeBar.style.opacity = '1';
-    
-    setTimeout(() => {
-      noticeSpan.style.animation = 'none';
-      void noticeSpan.offsetWidth;
-      noticeSpan.style.animation = 'marquee 40s linear infinite 0s';
-    }, 10);
-  }
-
-  // Button visibility - with page reload check
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('refreshed')) {
-    // Already refreshed, proceed normally
-    setButtonVisibility();
-  } else {
-    // First load, add parameter and reload
-    urlParams.set('refreshed', 'true');
-    window.location.search = urlParams.toString();
-  }
-});
-
-function setButtonVisibility() {
-  const role = getUserRole();
-  const formButton = $('#form-button');
-  const submissionsButton = $('#submissions-button');
-  
-  // Reset both first
-  formButton.style.display = 'none';
-  submissionsButton.style.display = 'none';
-  
-  if (role === 'user') {
-    formButton.style.display = 'inline-flex';
-  } else if (role === 'owner') {
-    submissionsButton.style.display = 'inline-flex';
-  }
-}
-</script>
 </body>
 </html>
