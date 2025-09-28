@@ -2036,6 +2036,34 @@ body::-webkit-scrollbar{display:none;}
     </div>
   </div>
   <div id="notification" class="notification"></div>
+  <!-- Dashboard Modal -->
+  <div id="dashboard-modal" class="dashboard-modal">
+    <div class="modal-content">
+      <div class="modal-body" id="dashboard-body">
+        <!-- ডাইনামিক কনটেন্ট এখানে লোড হবে -->
+      </div>
+    </div>
+  </div>
+  <!-- Name Set Modal -->
+<div class="modal" id="nameModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="hideNameModal()">×</button>
+    <div class="modal-intro">
+      <h2 class="bangla-font">নাম সেট করুন</h2>
+      <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
+      <div class="warning-message bangla-font">
+        দয়া করে আপনার পূর্ণ নাম ব্যবহার করুন, যাতে অন্য কারো সাথে নামের কোনো মিল না হয়। একটি স্বতন্ত্র এবং ব্যতিক্রমী নাম নির্বাচন করুন, যেন আপনার মতামত এবং উত্তর সঠিকভাবে সনাক্ত করা যায়।
+      </div>
+    </div>
+    <div class="form-section">
+      <form id="nameForm" onsubmit="saveName(event)">
+        <label class="bangla-font" for="userName">নাম</label>
+        <input type="text" id="userName" placeholder="আপনার পূর্ণ নাম লিখুন" required class="bangla-font">
+        <button type="submit" class="submit-button bangla-font">সেভ করুন</button>
+      </form>
+    </div>
+  </div>
+</div>
   <script>
     // DOM হেল্পার ফাংশন
     function $(sel, root = document) { return root.querySelector(sel); }
