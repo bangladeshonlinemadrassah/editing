@@ -2321,7 +2321,7 @@
 
     function formatDate(dateStr) {
       const [year, month, day] = dateStr.split('-');
-      return `${day}-${month}-${year.slice(2)}`;
+      return `${day}-${month}-${year}`;
     }
 
     // সাবজেক্ট ম্যাচিং (মিশনের সাব-সাবজেক্টগুলো চেক করে)
@@ -2682,7 +2682,7 @@
     // Dashboard functionality
     function parseDate(dateStr) {
       if (!dateStr) return new Date(0);
-      const [day, month, year] = dateStr.split('-').map(Number);
+      const [year, month, day] = dateStr.split('-').map(Number);
       return new Date(year, month - 1, day);
     }
 
@@ -2764,12 +2764,12 @@
     }
 
     function calculateStats(joinDate, completed) {
-      const joinDateObj = parseDate(formatDate(joinDate));
+      const joinDateObj = parseDate(joinDate);
       const items = getItemsFromAllClasses();
 
       function filterItems(itemList, isAfter) {
         return itemList.filter(item => {
-          const addDateObj = parseDate(formatDate(item.addDate));
+          const addDateObj = parseDate(item.addDate);
           return isAfter ? addDateObj >= joinDateObj : addDateObj < joinDateObj;
         });
       }
