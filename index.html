@@ -1607,6 +1607,11 @@
     .dashboard-modal .modal-content {
       max-width: 800px;
       max-height: 85vh;
+      width: 90%;
+      overflow-y: auto;
+      padding: 20px;
+      position: relative;
+      transform: translateZ(0); /* Ensures it's on top */
     }
 
     /* Submissions List */
@@ -1921,6 +1926,37 @@
       .dashboard-modal .modal-content {
         padding: 20px;
         max-height: 90vh;
+      }
+
+      .modal {
+        align-items: flex-start;
+        padding-top: 10vh;
+      }
+
+      .modal-content {
+        max-height: 80vh;
+        width: 95%;
+        margin: 0 auto;
+      }
+
+      .dashboard-modal {
+        align-items: flex-start;
+        padding-top: 5vh;
+      }
+
+      .dashboard-modal .modal-content {
+        max-height: 90vh;
+        width: 95%;
+      }
+
+      .notification {
+        top: 20px;
+        bottom: auto;
+      }
+
+      .warning-modal {
+        align-items: flex-start;
+        padding-top: 20vh;
       }
     }
   </style>
@@ -2766,31 +2802,15 @@
 
     // ইনিশিয়াল ডেটা লোড
     async function loadInitialData() {
-      if (checkLoginExpiry()) {
-        loginPage.style.display = 'none';
-        mainPage.style.display = 'block';
-        
-        // Set up button visibility based on role
-        if (getUserRole() === 'owner') {
-          $('#add-class-btn').style.display = 'inline-flex';
-          $('#submissions-button').style.display = 'inline-flex';
-          $('#dashboard-btn').style.display = 'none';
-          $('#form-button').style.display = 'none';
-        } else {
-          $('#add-class-btn').style.display = 'none';
-          $('#submissions-button').style.display = 'none';
-          $('#dashboard-btn').style.display = 'inline-flex';
-          $('#form-button').style.display = 'inline-flex';
-        }
-        
-        const rows = await fetchData();
-        allClasses = normalizeRows(rows);
-        const sortValue = $('#sort-classes').value;
-        const filteredClasses = filterClassesByTimeRange(sortValue);
-        renderTodayClassesSummary(filteredClasses);
-      } else {
+      if (!checkLoginExpiry()) {
         logout();
+        return;
       }
+      const rows = await fetchData();
+      allClasses = normalizeRows(rows);
+      const sortValue = $('#sort-classes').value;
+      const filteredClasses = filterClassesByTimeRange(sortValue);
+      renderTodayClassesSummary(filteredClasses);
     }
 
     // সার্চ ফাংশনালিটি
@@ -3323,7 +3343,7 @@
           
           // শুধুমাত্র Alim-25 ব্যাচ ফিল্টার করুন
           const alim25Submissions = data.filter(item => 
-            item.batch && item.batch.toString().toLowerCase().includes('alim-25')
+            item.batch && item.batch.toString().trim() === 'Alim-25'
           );
           
           // নতুন থেকে পুরানো সাজানো
