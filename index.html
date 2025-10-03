@@ -2078,6 +2078,52 @@
           <i class="fas fa-list"></i> সাবমিশন দেখুন
         </button>
       </div>
+
+      <!-- Inline Name Set Section -->
+      <div id="name-section" class="modal-content" style="display:none; margin: 20px auto;">
+        <div class="modal-intro">
+          <h2 class="bangla-font">নাম সেট করুন</h2>
+          <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
+        </div>
+        <div class="form-section">
+          <form id="nameForm" onsubmit="saveName(event)">
+            <label class="bangla-font" for="userName">নাম</label>
+            <input type="text" id="userName" placeholder="আপনার পূর্ণ নাম লিখুন" required class="bangla-font">
+            <button type="submit" class="submit-button bangla-font">সেভ করুন</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Inline Form Section -->
+      <div id="form-section" class="modal-content" style="display:none; margin: 20px auto;">
+        <div class="modal-intro">
+          <h2 class="bangla-font">আপনার মতামত আমাদের কাছে মূল্যবান</h2>
+          <p class="bangla-font">প্রিয় শিক্ষার্থী, আমাদের শিক্ষামূলক ওয়েবসাইট আপনাদের শিক্ষা ও জ্ঞানার্জনের পথকে আরও সহজ ও ফলপ্রসূ করতে প্রতিশ্রুতিবদ্ধ। নিচের ফর্মটি পূরণ করুন।</p>
+        </div>
+        <div class="form-section">
+          <form id="myForm" onsubmit="submitForm(event)">
+            <label class="bangla-font" for="name">নাম</label>
+            <input type="text" name="name" id="name" placeholder="আপনার নাম" required class="bangla-font" readonly><br>
+            <label class="bangla-font" for="batch">ব্যাচ নাম</label>
+            <select name="batch" id="batch" required class="bangla-font">
+              <option value="" disabled selected class="bangla-font">ব্যাচ নির্বাচন করুন</option>
+              <option value="Alim-25" class="bangla-font">আলিম-২৫</option>
+            </select><br>
+            <label class="bangla-font" for="message">মতামত/পরামর্শ/অভিযোগ</label>
+            <textarea name="message" id="message" placeholder="আপনার মতামত লিখুন" required class="bangla-font"></textarea>
+            <button type="submit" class="submit-button bangla-font" id="submitBtn">জমা দিন <span class="spinner"></span></button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Inline Submissions Section -->
+      <div id="submissions-section" class="modal-content" style="display:none; margin: 20px auto;">
+        <div class="modal-intro">
+          <h2 class="bangla-font">সাবমিশন তালিকা</h2>
+          <p class="bangla-font">এখানে সকল সাবমিশন দেখুন।</p>
+        </div>
+        <div id="submissions-list" class="submissions-list"></div>
+      </div>
     </div>
     
     <!-- OWNER & DESIGNER BLOCK -->
@@ -2198,61 +2244,6 @@
     </div>
   </div>
   
-  <!-- Name Set Modal -->
-  <div class="modal" id="nameModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="hideNameModal()">×</button>
-      <div class="modal-intro">
-        <h2 class="bangla-font">নাম সেট করুন</h2>
-        <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
-      </div>
-      <div class="form-section">
-        <form id="nameForm" onsubmit="saveName(event)">
-          <label class="bangla-font" for="userName">নাম</label>
-          <input type="text" id="userName" placeholder="আপনার পূর্ণ নাম লিখুন" required class="bangla-font">
-          <button type="submit" class="submit-button bangla-font">সেভ করুন</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Form Modal -->
-  <div class="modal" id="formModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="hideForm()">×</button>
-      <div class="modal-intro">
-        <h2 class="bangla-font">আপনার মতামত আমাদের কাছে মূল্যবান</h2>
-        <p class="bangla-font">প্রিয় শিক্ষার্থী, আমাদের শিক্ষামূলক ওয়েবসাইট আপনাদের শিক্ষা ও জ্ঞানার্জনের পথকে আরও সহজ ও ফলপ্রসূ করতে প্রতিশ্রুতিবদ্ধ। নিচের ফর্মটি পূরণ করুন।</p>
-      </div>
-      <div class="form-section">
-        <form id="myForm" onsubmit="submitForm(event)">
-          <label class="bangla-font" for="name">নাম</label>
-          <input type="text" name="name" id="name" placeholder="আপনার নাম" required class="bangla-font" readonly><br>
-          <label class="bangla-font" for="batch">ব্যাচ নাম</label>
-          <select name="batch" id="batch" required class="bangla-font">
-            <option value="" disabled selected class="bangla-font">ব্যাচ নির্বাচন করুন</option>
-            <option value="Alim-25" class="bangla-font">আলিম-২৫</option>
-          </select><br>
-          <label class="bangla-font" for="message">মতামত/পরামর্শ/অভিযোগ</label>
-          <textarea name="message" id="message" placeholder="আপনার মতামত লিখুন" required class="bangla-font"></textarea>
-          <button type="submit" class="submit-button bangla-font" id="submitBtn">জমা দিন <span class="spinner"></span></button>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Submissions Modal -->
-  <div class="modal" id="submissionsModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="hideSubmissions()">×</button>
-      <div class="modal-intro">
-        <h2 class="bangla-font">সাবমিশন তালিকা</h2>
-        <p class="bangla-font">এখানে সকল সাবমিশন দেখুন।</p>
-      </div>
-      <div id="submissions-list" class="submissions-list"></div>
-    </div>
-  </div>
-  
   <!-- Success Message -->
   <div class="success-message" id="successMessage" style="display: none;">ফর্ম সফলভাবে জমা হয়েছে!</div>
 
@@ -2286,6 +2277,7 @@
     const LOGIN_EXPIRY_KEY = 'alim25_login_expiry';
     const IS_LOGGED_IN_KEY = 'alim25_is_logged_in';
     const USER_ROLE_KEY = 'alim25_user_role';
+    const MAIN_SCROLL_POSITION = 'alim25_main_scroll_pos';
 
     // Dashboard storage keys
     const STORAGE_KEYS = {
@@ -2735,6 +2727,7 @@
 
     // সাবজেক্ট পেজ দেখানো
     function showSubjectPage(subject) {
+      localStorage.setItem(MAIN_SCROLL_POSITION, window.scrollY);
       mainPage.style.display = 'none';
       missionSubjectsPage.style.display = 'none';
       subjectPage.style.display = 'block';
@@ -2760,11 +2753,13 @@
       const sortValue = $('#sort-classes').value;
       const filteredClasses = filterClassesByTimeRange(sortValue);
       renderTodayClassesSummary(filteredClasses);
-      scrollToTop();
+      const savedScroll = localStorage.getItem(MAIN_SCROLL_POSITION) || 0;
+      window.scrollTo(0, savedScroll);
     }
 
     // মিশন সাব-সাবজেক্ট পেজ দেখানো
     function showMissionSubjectsPage() {
+      localStorage.setItem(MAIN_SCROLL_POSITION, window.scrollY);
       mainPage.style.display = 'none';
       subjectPage.style.display = 'none';
       missionSubjectsPage.style.display = 'block';
@@ -3230,8 +3225,17 @@
     }
 
     // Form functionality
-    function showNameModal(){ $('#nameModal').style.display='flex'; }
-    function hideNameModal(){ $('#nameModal').style.display='none'; }
+    function handleFormClick() {
+      $('#submissions-section').style.display = 'none';
+      if (!storedName) {
+        $('#name-section').style.display = 'block';
+        $('#form-section').style.display = 'none';
+      } else {
+        $('#name-section').style.display = 'none';
+        $('#form-section').style.display = 'block';
+        $('#name').value = storedName;
+      }
+    }
 
     function saveName(event){
       event.preventDefault();
@@ -3239,39 +3243,12 @@
       if (name) {
         localStorage.setItem('userName', name);
         storedName = name;
-        hideNameModal();
-        showForm();
+        $('#name-section').style.display = 'none';
+        handleFormClick();
       } else {
         showNotification("নাম লিখুন!", true);
       }
     }
-
-    function handleFormClick() {
-      if (!storedName) {
-        showNameModal();
-      } else {
-        showForm();
-      }
-    }
-
-    function showForm(){ 
-      $('#formModal').style.display='flex'; 
-      $('#myForm').reset(); 
-      $('#name').value = storedName;
-    }
-
-    function hideForm(){ $('#formModal').style.display='none'; }
-
-    function showSubmissions(){ 
-      $('#submissionsModal').style.display='flex'; 
-      
-      // শুধু এই ১ লাইন যোগ করুন
-      $('#submissions-list').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)" class="bangla-font">লোড হচ্ছে...</div>';
-      
-      loadSubmissions(); 
-        }
-
-    function hideSubmissions(){ $('#submissionsModal').style.display='none'; }
 
     function submitForm(event){
       event.preventDefault();
@@ -3294,7 +3271,8 @@
         submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
         if(txt.startsWith("Success")){
-          form.reset(); hideForm(); 
+          form.reset(); 
+          $('#form-section').style.display = 'none'; 
           showNotification("ফর্ম সফলভাবে জমা হয়েছে!", false);
         }else{
           showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
@@ -3343,6 +3321,13 @@
       .catch(() => showNotification("সাবমিশন লোড হয়নি! আবার চেষ্টা করুন।", true));
         }
 
+    function handleSubmissionsClick() {
+      $('#name-section').style.display = 'none';
+      $('#form-section').style.display = 'none';
+      $('#submissions-section').style.display = 'block';
+      loadSubmissions(); 
+    }
+
     // Set up event listeners for new features
     function setupNewFeatures() {
       // Dashboard button
@@ -3355,13 +3340,10 @@
 
       // Submissions button
       const submissionsButton = $('#submissions-button');
-      submissionsButton.addEventListener('click', showSubmissions);
+      submissionsButton.addEventListener('click', handleSubmissionsClick);
 
       // Modal close events
       window.addEventListener('click',(e)=>{ 
-        if(e.target==$('#nameModal')) hideNameModal(); 
-        if(e.target==$('#formModal')) hideForm(); 
-        if(e.target==$('#submissionsModal')) hideSubmissions(); 
         if(e.target==$('#dashboard-modal')) {
           $('#dashboard-modal').classList.remove('show');
         }
