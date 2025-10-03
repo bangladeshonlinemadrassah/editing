@@ -864,23 +864,24 @@
     }
 
     /* =========================
-    WARNING MODAL - FLOATING POPUP CENTER
+    WARNING MODAL - FIXED TO VIEWPORT CENTER
     ========================= */
     .warning-modal {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 100vw;
       height: 100vh;
       background: rgba(0, 0, 0, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
+      z-index: 10000;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s, visibility 0.3s;
       backdrop-filter: blur(10px);
+      padding: 20px;
     }
 
     .warning-modal.show {
@@ -888,13 +889,13 @@
       visibility: visible;
     }
 
-    .modal-content {
+    .warning-modal .modal-content {
       background: var(--card-bg);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius);
       padding: 35px;
       max-width: 500px;
-      width: 90%;
+      width: 100%;
       max-height: 80vh;
       overflow-y: auto;
       backdrop-filter: blur(20px);
@@ -902,7 +903,7 @@
       position: relative;
     }
 
-    .modal-content::after {
+    .warning-modal .modal-content::after {
       content: '';
       position: absolute;
       top: -50%;
@@ -948,32 +949,34 @@
     }
 
     /* =========================
-    NOTIFICATION - ENHANCED
+    NOTIFICATION - FIXED TO VIEWPORT CENTER
     ========================= */
     .notification {
       position: fixed;
-      bottom: 40px;
-      right: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       padding: 16px 24px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       box-shadow: var(--shadow-lg);
-      z-index: 1000;
+      z-index: 10001;
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.4s, transform 0.4s;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
       backdrop-filter: blur(15px);
       display: flex;
       align-items: center;
       gap: 12px;
       max-width: 400px;
+      width: 90%;
       font-size: 0.95rem;
     }
 
     .notification.show {
       opacity: 1;
-      transform: translateY(0);
+      visibility: visible;
     }
 
     .notification.error {
@@ -986,18 +989,6 @@
 
     .notification.warning {
       border-left: 5px solid var(--warning);
-    }
-
-    @media (max-width: 768px) {
-      .notification {
-        top: 80px;
-        bottom: auto;
-        left: 10px;
-        right: 10px;
-        max-width: none;
-        width: calc(100% - 20px);
-        margin: 0 auto;
-      }
     }
 
     /* =========================
@@ -1347,7 +1338,7 @@
     }
 
     /* =========================
-    NEW FEATURES STYLES
+    NEW FEATURES STYLES - FIXED TO VIEWPORT CENTER
     ========================= */
     
     /* Notice Bar */
@@ -1426,19 +1417,20 @@
       left: 100%;
     }
 
-    /* Modal Styles */
+    /* Modal Styles - FIXED TO VIEWPORT CENTER */
     .modal {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 10000;
       backdrop-filter: blur(5px);
+      padding: 20px;
     }
 
     .modal-content {
@@ -1447,7 +1439,7 @@
       border-radius: var(--radius);
       padding: 25px;
       max-width: 600px;
-      width: 90%;
+      width: 100%;
       backdrop-filter: blur(12px);
       box-shadow: var(--shadow-lg);
       position: relative;
@@ -1582,21 +1574,22 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Dashboard Modal */
+    /* Dashboard Modal - FIXED TO VIEWPORT CENTER */
     .dashboard-modal {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0, 0, 0, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
+      z-index: 10000;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s, visibility 0.3s;
+      padding: 20px;
     }
 
     .dashboard-modal.show {
@@ -1607,11 +1600,10 @@
     .dashboard-modal .modal-content {
       max-width: 800px;
       max-height: 85vh;
-      width: 90%;
+      width: 100%;
       overflow-y: auto;
       padding: 20px;
       position: relative;
-      transform: translateZ(0); /* Ensures it's on top */
     }
 
     /* Submissions List */
@@ -1706,17 +1698,17 @@
     }
 
     .stats-table .total {
-      color: #2563eb; /* Blue for total */
+      color: #2563eb;
       font-weight: 600;
     }
 
     .stats-table .done {
-      color: #10b981; /* Green for done */
+      color: #10b981;
       font-weight: 600;
     }
 
     .stats-table .pending {
-      color: #ef4444; /* Red for pending */
+      color: #ef4444;
       font-weight: 600;
     }
 
@@ -1928,35 +1920,16 @@
         max-height: 90vh;
       }
 
-      .modal {
-        align-items: flex-start;
-        padding-top: 10vh;
-      }
-
       .modal-content {
         max-height: 80vh;
-        width: 95%;
-        margin: 0 auto;
-      }
-
-      .dashboard-modal {
-        align-items: flex-start;
-        padding-top: 5vh;
       }
 
       .dashboard-modal .modal-content {
         max-height: 90vh;
-        width: 95%;
       }
 
       .notification {
-        top: 20px;
-        bottom: auto;
-      }
-
-      .warning-modal {
-        align-items: flex-start;
-        padding-top: 20vh;
+        width: 95%;
       }
     }
   </style>
