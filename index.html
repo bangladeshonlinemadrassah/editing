@@ -1997,6 +1997,71 @@
       margin-bottom: 15px;
       color: var(--primary);
     }
+
+    /* =========================
+    FORM SUCCESS MESSAGE STYLES
+    ========================= */
+    .form-success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: var(--shadow-lg);
+      z-index: 10003;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+      backdrop-filter: blur(15px);
+      text-align: center;
+      max-width: 350px;
+      width: 90%;
+    }
+
+    .form-success-message.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .form-success-message .success-icon {
+      font-size: 3rem;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+
+    .form-success-message h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: var(--text);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .form-success-message p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .form-success-message .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .form-success-message .close-btn:hover {
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -2328,9 +2393,16 @@
       </div>
     </div>
   </div>
-  
-  <!-- Success Message -->
-  <div class="success-message" id="successMessage" style="display: none;">ফর্ম সফলভাবে জমা হয়েছে!</div>
+
+  <!-- Form Success Message -->
+  <div id="form-success-message" class="form-success-message">
+    <button class="close-btn" onclick="closeSuccessMessage()">×</button>
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h3 class="bangla-font">ধন্যবাদ!</h3>
+    <p class="bangla-font">আপনার সাবমিশন সফলভাবে প্রেরণ করা হয়েছে</p>
+  </div>
 
   <script>
     // DOM হেল্পার ফাংশন
@@ -2346,6 +2418,7 @@
     const missionSubjectsPage = $('#mission-subjects-page');
     const warningModal = $('#warning-modal');
     const dataLoadingOverlay = $('#data-loading-overlay');
+    const formSuccessMessage = $('#form-success-message');
     let allClasses = [];
 
     // সাবজেক্টের তালিকা (মিশন এখানে আছে, কিন্তু সাব-সাবজেক্ট আলাদা)
@@ -3384,6 +3457,15 @@
       }
     }
 
+    // Form success message functions
+    function showSuccessMessage() {
+      formSuccessMessage.classList.add('show');
+    }
+
+    function closeSuccessMessage() {
+      formSuccessMessage.classList.remove('show');
+    }
+
     function submitForm(event){
       event.preventDefault();
       const submitBtn = $('#submitBtn');
@@ -3407,7 +3489,12 @@
         if(txt.startsWith("Success")){
           form.reset(); 
           $('#form-section').style.display = 'none'; 
-          showNotification("ফর্ম সফলভাবে জমা হয়েছে!", false);
+          // Show success message
+          showSuccessMessage();
+          // Auto close after 3 seconds
+          setTimeout(() => {
+            closeSuccessMessage();
+          }, 3000);
         }else{
           showNotification("ডেটা জমা হয়নি! আবার চেষ্টা করুন।", true);
         }
