@@ -1967,6 +1967,40 @@
       margin-bottom: 10px;
     }
 
+    /* Data loading indicator */
+    .data-loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10002;
+      color: white;
+      font-size: 1.2rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .data-loading-content {
+      position: fixed;
+      top: 1%;
+      left: 0;
+      text-align: center;
+      padding: 30px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .data-loading-spinner {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
     /* =========================
     FORM SUCCESS MESSAGE STYLES
     ========================= */
@@ -2056,6 +2090,16 @@
           <span>WhatsApp</span>
         </a>
       </div>
+    </div>
+  </div>
+  
+  <!-- Data Loading Overlay -->
+  <div id="data-loading-overlay" class="data-loading-overlay" style="display: none;">
+    <div class="data-loading-content">
+      <div class="data-loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p class="bangla-font">দয়া করে ডাটা লোড সম্পন্ন হওয়া পর্যন্ত অপেক্ষা করুন...</p>
     </div>
   </div>
   
