@@ -1348,7 +1348,7 @@
       background: rgba(67, 97, 238, 0.1);
       color: var(--warning);
       font-size: 0.8rem;
-      padding: 8px 0;
+      padding: 6px 0;
       text-align: center;
       border-bottom: 1px solid var(--glass-border);
       margin-top: 0;
@@ -1579,7 +1579,7 @@
     /* Dashboard Modal - FIXED TO VIEWPORT CENTER */
     .dashboard-modal {
       position: fixed;
-      top: 2%;
+      top: 1%;
       left: 0;
       width: 100vw;
       height: 100vh;
@@ -1934,6 +1934,69 @@
         width: 95%;
       }
     }
+
+    /* NEW STYLES FOR REQUESTED CHANGES */
+    
+    /* Close buttons for forms */
+    .form-close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .form-close-btn:hover {
+      color: var(--danger);
+    }
+
+    /* Loading states */
+    .loading-message {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+    }
+
+    .loading-message i {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    /* Data loading indicator */
+    .data-loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10002;
+      color: white;
+      font-size: 1.2rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .data-loading-content {
+      text-align: center;
+      padding: 30px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .data-loading-spinner {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -1959,6 +2022,16 @@
           <span>WhatsApp</span>
         </a>
       </div>
+    </div>
+  </div>
+  
+  <!-- Data Loading Overlay -->
+  <div id="data-loading-overlay" class="data-loading-overlay" style="display: none;">
+    <div class="data-loading-content">
+      <div class="data-loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p class="bangla-font">দয়া করে ডাটা লোড সম্পন্ন হওয়া পর্যন্ত অপেক্ষা করুন...</p>
     </div>
   </div>
   
@@ -2081,7 +2154,8 @@
       </div>
 
       <!-- Inline Name Set Section -->
-      <div id="name-section" class="modal-content" style="display:none; margin: 20px auto;">
+      <div id="name-section" class="modal-content" style="display:none; margin: 20px auto; position: relative;">
+        <button class="form-close-btn" onclick="closeNameSection()">×</button>
         <div class="modal-intro">
           <h2 class="bangla-font">নাম সেট করুন</h2>
           <p class="bangla-font">আপনার নাম লিখুন। এটি সেভ হয়ে যাবে এবং পরবর্তীতে কমেন্ট ও রিপ্লাই দেখার জন্য ব্যবহৃত হবে।</p>
@@ -2099,7 +2173,8 @@
       </div>
 
       <!-- Inline Form Section -->
-      <div id="form-section" class="modal-content" style="display:none; margin: 20px auto;">
+      <div id="form-section" class="modal-content" style="display:none; margin: 20px auto; position: relative;">
+        <button class="form-close-btn" onclick="closeFormSection()">×</button>
         <div class="modal-intro">
           <h2 class="bangla-font">আপনার মতামত আমাদের কাছে মূল্যবান</h2>
           <p class="bangla-font">প্রিয় শিক্ষার্থী, আমাদের শিক্ষামূলক ওয়েবসাইট আপনাদের শিক্ষা ও জ্ঞানার্জনের পথকে আরও সহজ ও ফলপ্রসূ করতে প্রতিশ্রুতিবদ্ধ। নিচের ফর্মটি পূরণ করুন।</p>
@@ -2121,12 +2196,18 @@
       </div>
 
       <!-- Inline Submissions Section -->
-      <div id="submissions-section" class="modal-content" style="display:none; margin: 20px auto;">
+      <div id="submissions-section" class="modal-content" style="display:none; margin: 20px auto; position: relative;">
+        <button class="form-close-btn" onclick="closeSubmissionsSection()">×</button>
         <div class="modal-intro">
           <h2 class="bangla-font">সাবমিশন তালিকা</h2>
           <p class="bangla-font">এখানে সকল সাবমিশন দেখুন।</p>
         </div>
-        <div id="submissions-list" class="submissions-list"></div>
+        <div id="submissions-list" class="submissions-list">
+          <div class="loading-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p class="bangla-font">সাবমিশন লোড হচ্ছে...</p>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -2264,6 +2345,7 @@
     const subjectPage = $('#subject-page');
     const missionSubjectsPage = $('#mission-subjects-page');
     const warningModal = $('#warning-modal');
+    const dataLoadingOverlay = $('#data-loading-overlay');
     let allClasses = [];
 
     // সাবজেক্টের তালিকা (মিশন এখানে আছে, কিন্তু সাব-সাবজেক্ট আলাদা)
@@ -2275,6 +2357,14 @@
       "মিশন: Dhaka University Written",
       "মিশন: ইসলামী বিশ্ববিদ্যালয়ের কুষ্টিয়া (ধর্মতত্ত্ব)",
       "মিশন: চট্টগ্রাম বিশ্ববিদ্যালয় বি-২-উপ ইউনিট"
+    ];
+
+    // File priority subjects - এই সাবজেক্টগুলোতে File কলামের লিংক প্রায়োরিটি পাবে
+    const filePrioritySubjects = [
+      ...missionSubSubjects,
+      "রেজাল্ট",
+      "উত্তরপত্র ও শীট",
+      "অন্যান্য"
     ];
 
     // localStorage keys
@@ -2397,6 +2487,13 @@
         showWarningModal();
         loadInitialData();
         scrollToTop();
+      } else if (password === 'EDITOR@BOM-435') {
+        setLoginExpiry('editor');
+        loginPage.style.display = 'none';
+        mainPage.style.display = 'block';
+        showWarningModal();
+        loadInitialData();
+        scrollToTop();
       } else {
         errorElement.style.display = 'block';
         setTimeout(() => {
@@ -2478,7 +2575,7 @@
       }
     }
 
-    // ডেটা নরমালাইজ
+    // ডেটা নরমালাইজ - নতুন File কলামের জন্য আপডেট করা হয়েছে
     function normalizeRows(rows) {
       try {
         // Sort all rows by timestamp ascending for global tracking ID
@@ -2507,10 +2604,17 @@
           const subjectRows = groupedBySubject[subject].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
           subjectRows.forEach((row, index) => {
             const timestamp = row.timestamp || '';
-            let link = row.link || '#';
-            if (specialFolders.includes(subject)) {
+            
+            // NEW: File column logic - File কলামে লিংক থাকলে সেটা ব্যবহার করবে, নাহলে Link কলামের লিংক ব্যবহার করবে
+            let link = '#';
+            if (filePrioritySubjects.includes(subject)) {
+              // এই সাবজেক্টগুলোর জন্য File কলাম প্রায়োরিটি পাবে
               link = row.file || row.link || '#';
+            } else {
+              // অন্যান্য সাবজেক্টের জন্য Link কলাম প্রায়োরিটি পাবে
+              link = row.link || row.file || '#';
             }
+            
             const title = row.title || (subject === 'মিশন' ? 'মিশন' : subject === 'ইক্সাম' ? 'ইক্সাম' : 'ক্লাস ভিডিও');
             const date = getDateFromTimestamp(timestamp);
             const time = getTimeFromTimestamp(timestamp);
@@ -2757,8 +2861,11 @@
       const sortValue = $('#sort-classes').value;
       const filteredClasses = filterClassesByTimeRange(sortValue);
       renderTodayClassesSummary(filteredClasses);
+      // Restore the saved scroll position
       const savedScroll = localStorage.getItem(MAIN_SCROLL_POSITION) || 0;
-      window.scrollTo(0, savedScroll);
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedScroll));
+      }, 100);
     }
 
     // মিশন সাব-সাবজেক্ট পেজ দেখানো
@@ -2778,11 +2885,22 @@
         logout();
         return;
       }
-      const rows = await fetchData();
-      allClasses = normalizeRows(rows);
-      const sortValue = $('#sort-classes').value;
-      const filteredClasses = filterClassesByTimeRange(sortValue);
-      renderTodayClassesSummary(filteredClasses);
+      
+      // Show data loading overlay
+      dataLoadingOverlay.style.display = 'flex';
+      
+      try {
+        const rows = await fetchData();
+        allClasses = normalizeRows(rows);
+        const sortValue = $('#sort-classes').value;
+        const filteredClasses = filterClassesByTimeRange(sortValue);
+        renderTodayClassesSummary(filteredClasses);
+      } catch (error) {
+        console.error("Data loading error:", error);
+      } finally {
+        // Hide data loading overlay
+        dataLoadingOverlay.style.display = 'none';
+      }
     }
 
     // সার্চ ফাংশনালিটি
@@ -3241,6 +3359,18 @@
       }
     }
 
+    function closeNameSection() {
+      $('#name-section').style.display = 'none';
+    }
+
+    function closeFormSection() {
+      $('#form-section').style.display = 'none';
+    }
+
+    function closeSubmissionsSection() {
+      $('#submissions-section').style.display = 'none';
+    }
+
     function saveName(event){
       event.preventDefault();
       const name = $('#userName').value.trim();
@@ -3290,11 +3420,18 @@
     }
 
     function loadSubmissions() {
+      const submissionsList = $('#submissions-list');
+      submissionsList.innerHTML = `
+        <div class="loading-message">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p class="bangla-font">সাবমিশন লোড হচ্ছে...</p>
+        </div>
+      `;
+      
       fetch(WEB_APP_URL + '?action=getSubmissions')
         .then(res => res.json())
         .then(data => {
-          const list = $('#submissions-list');
-          list.innerHTML = '';
+          submissionsList.innerHTML = '';
           
           // শুধুমাত্র Alim-25 ব্যাচ ফিল্টার করুন
           const alim25Submissions = data.filter(item => 
@@ -3305,7 +3442,7 @@
           alim25Submissions.sort((a, b) => new Date(b.timestamp || b.time) - new Date(a.timestamp || a.time));
           
           if (alim25Submissions.length === 0) {
-            list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)" class="bangla-font">Alim-25 ব্যাচের কোন সাবমিশন নেই</div>';
+            submissionsList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)" class="bangla-font">Alim-25 ব্যাচের কোন সাবমিশন নেই</div>';
             return;
           }
           
@@ -3319,7 +3456,7 @@
               ${item.reply ? `<div class="submission-reply bangla-font">উত্তর: ${item.reply}</div>` : ''}
               <div class="submission-time bangla-font">${item.time}</div>
             `;
-            list.appendChild(div);
+            submissionsList.appendChild(div);
           });
         })
       .catch(() => showNotification("সাবমিশন লোড হয়নি! আবার চেষ্টা করুন।", true));
@@ -3361,12 +3498,20 @@
         mainPage.style.display = 'block';
         
         // Set up button visibility based on role
-        if (getUserRole() === 'owner') {
+        const userRole = getUserRole();
+        if (userRole === 'owner') {
           $('#add-class-btn').style.display = 'inline-flex';
           $('#submissions-button').style.display = 'inline-flex';
           $('#dashboard-btn').style.display = 'none';
           $('#form-button').style.display = 'none';
+        } else if (userRole === 'editor') {
+          // Editor sees all buttons
+          $('#add-class-btn').style.display = 'inline-flex';
+          $('#submissions-button').style.display = 'inline-flex';
+          $('#dashboard-btn').style.display = 'inline-flex';
+          $('#form-button').style.display = 'inline-flex';
         } else {
+          // Regular user
           $('#add-class-btn').style.display = 'none';
           $('#submissions-button').style.display = 'none';
           $('#dashboard-btn').style.display = 'inline-flex';
