@@ -1444,56 +1444,6 @@
       }
     }
 
-    .clock-container {
-      text-align: center;
-      margin: 20px auto;
-      padding: 25px 20px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(10px);
-      max-width: 300px;
-      width: 100%;
-    }
-
-    .clock-time {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 5px;
-    }
-
-    .clock-time small {
-      font-size: 0.5em;
-      vertical-align: middle;
-    }
-
-    .clock-date {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    #exam-countdown {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .clock-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--gradient-secondary);
-    }
-
     #search-results {
       margin: 10px 0;
       display: flex;
@@ -1956,6 +1906,246 @@
       }
     }
   </style>
+  <style>
+   :root{
+    --size: 380px;
+    --glass-bg: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.12);
+    --blur: 14px;
+    --accent-gradient: linear-gradient(90deg, #7cc1ff 0%, #ff8ad0 100%);
+    --soft-white: rgba(255,255,255,0.95);
+    --roman-size: 18px;
+  }
+
+  .wall-clock-wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    margin: 18px auto;
+    width: 100%;
+    max-width: 560px;
+    padding: 6px;
+  }
+
+  .wall-clock{
+    position: relative;
+    width: clamp(220px, 84%, var(--size));
+    aspect-ratio: 1/1;
+    border-radius: 26px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+    perspective: 900px;
+    /* subtle outer background to match site */
+    background: linear-gradient(180deg, rgba(8,12,24,0.55), rgba(12,18,32,0.65));
+  }
+
+  /* metallic rim / bezel */
+  .bezel{
+    position: absolute;
+    inset: 0;
+    border-radius: 26px;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), transparent 6%),
+                conic-gradient(from 200deg at 50% 50%, rgba(255,255,255,0.01), rgba(0,0,0,0.08));
+    box-shadow: 0 20px 60px rgba(6,10,20,0.6), inset 0 3px 14px rgba(255,255,255,0.02);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .clock-face{
+    position: absolute;
+    width: 92%;
+    height: 92%;
+    border-radius: 50%;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid var(--border);
+    box-shadow:
+      0 14px 46px rgba(6,10,20,0.6),
+      inset 0 6px 18px rgba(255,255,255,0.02);
+    backdrop-filter: blur(var(--blur));
+    overflow: visible;
+    display:block;
+  }
+
+  /* glass reflective sweep */
+  .clock-face::after{
+    content: "";
+    position: absolute;
+    left: -25%;
+    top: -35%;
+    width: 150%;
+    height: 80%;
+    transform: rotate(-18deg);
+    background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00) 60%);
+    filter: blur(18px);
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  /* ambient halo */
+  .wall-clock::before{
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 20px;
+    pointer-events: none;
+    background: radial-gradient(700px 260px at 10% 12%, rgba(124,193,255,0.06), transparent 6%),
+                radial-gradient(640px 240px at 90% 88%, rgba(255,138,208,0.06), transparent 6%);
+    mix-blend-mode: screen;
+    z-index:0;
+  }
+
+  /* Roman numerals (created by JS) */
+  .number{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center;
+    font-family: "Georgia","Times New Roman",serif;
+    font-weight: 700;
+    font-size: var(--roman-size);
+    color: var(--soft-white);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.45);
+    user-select: none;
+    letter-spacing: 0.06em;
+    pointer-events: none;
+  }
+
+  /* clock hands */
+  .hand{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) translateY(-100%) rotate(0deg);
+    border-radius: 8px;
+    transition: transform 80ms linear;
+    will-change: transform;
+    z-index: 6;
+  }
+
+  .hour-hand{
+    width: 8px;
+    height: 22%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(240,240,240,0.85));
+    box-shadow: 0 8px 22px rgba(6,10,20,0.6), inset 0 2px 10px rgba(255,255,255,0.22);
+    border-radius: 12px;
+  }
+
+  .minute-hand{
+    width: 6px;
+    height: 30%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(240,240,240,0.75));
+    box-shadow: 0 8px 18px rgba(6,10,20,0.5), inset 0 1px 6px rgba(255,255,255,0.18);
+    border-radius: 10px;
+  }
+
+  .second-hand{
+    width: 3px;
+    height: 36%;
+    background: var(--accent-gradient);
+    box-shadow: 0 8px 20px rgba(124,193,255,0.08), 0 0 18px rgba(255,138,208,0.06);
+    border-radius: 8px;
+    filter: drop-shadow(0 6px 10px rgba(255,138,208,0.06));
+  }
+
+  .second-hand::after{
+    content: "";
+    position: absolute;
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    box-shadow: 0 8px 22px rgba(255,138,208,0.14);
+  }
+
+  .center-dot{
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(210,210,210,0.7));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    z-index: 10;
+  }
+
+  /* mini top (AM/PM) integrated */
+  .mini-top{
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    transform: translateX(-50%);
+    z-index: 6;
+    pointer-events: none;
+    width: 34%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .ampm{
+    font-size: 0.74rem;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--soft-white);
+    letter-spacing: 0.06em;
+    box-shadow: 0 6px 18px rgba(8,12,20,0.5), 0 0 10px rgba(124,193,255,0.03);
+    backdrop-filter: blur(6px);
+  }
+
+  /* mini bottom (Exam countdown) integrated */
+  .mini-bottom{
+    position: absolute;
+    left: 50%;
+    bottom: 9%;
+    transform: translateX(-50%);
+    z-index: 6;
+    pointer-events: none;
+    width: 72%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .exam-label{
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--soft-white);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 30px rgba(6,10,20,0.55);
+    text-align:center;
+    letter-spacing: 0.02em;
+  }
+
+  .clock-caption{
+    font-size: 0.96rem;
+    color: rgba(255,255,255,0.90);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* responsiveness */
+  @media (max-width:420px){
+    :root{ --size: 280px; --roman-size: 15px; }
+    .ampm{ font-size: 0.62rem; padding:5px 8px; }
+    .exam-label{ font-size: 0.66rem; padding:6px 10px; }
+    .center-dot{ width:12px; height:12px; }
+  }
+  </style>
 </head>
 <body>
   <!-- Loading Overlay -->
@@ -2021,10 +2211,32 @@
         <p class="bangla-font">শিক্ষার যাত্রায় এক নতুন দিগন্ত। বাংলাদেশ অনলাইন মাদ্রাসা (BOM) এর প্রাইভেট ব্যাচের আলিম-২৬ শিক্ষার্থীদের জন্য প্রিমিয়াম লার্নিং এক্সপেরিয়েন্স</p>
       </div>
       <!-- Attractive Clock with Date -->
-      <div class="clock-container fade-in stat-card">
-        <div id="clock-time" class="clock-time"></div>
-        <div id="clock-date" class="clock-date"></div>
-        <div id="exam-countdown" class="stat-label bangla-font"></div>
+      <div class="wall-clock-wrapper">
+  <div class="wall-clock" role="img" aria-label="Analog wall clock with Roman numerals">
+    <div class="bezel"></div>
+
+    <div class="clock-face" id="clockFace">
+      <!-- small AM/PM near top-center (integrated) -->
+      <div class="mini-top">
+        <div id="ampm" class="ampm">AM</div>
+      </div>
+
+      <!-- small exam countdown integrated at bottom -->
+      <div class="mini-bottom">
+        <div id="examLabel" class="exam-label">Exam in 0d 0h 0m</div>
+      </div>
+    </div>
+
+    <!-- clock hands -->
+    <div class="hand hour-hand" id="hourHand"></div>
+    <div class="hand minute-hand" id="minuteHand"></div>
+    <div class="hand second-hand" id="secondHand"></div>
+
+    <!-- center -->
+    <div class="center-dot"></div>
+  </div>
+
+  <div class="clock-caption">Premium Wall Clock • Blue → Pink</div>
       </div>
       <div class="stats">
         <div class="stat-card fade-in">
@@ -3564,41 +3776,118 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Initialize Clock
-  updateClock();
-  setInterval(updateClock, 1000);
-});
+  (function premiumClock(){
+    // Roman numerals
+    const ROMANS = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
+    const clockFace = document.getElementById('clockFace');
 
-function updateClock() {
-  const now = new Date();
-  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-
-  // Time and date in Bengali
-  let timeStr = now.toLocaleTimeString('bn-BD', timeOptions); // Bengali digits for time
-  timeStr = timeStr.replace(/(AM|PM)/, '<small>$1</small>'); // Make AM/PM smaller
-  const dateStr = now.toLocaleDateString('bn-BD', dateOptions); // Bengali date
-
-  const clockTime = document.getElementById('clock-time');
-  const clockDate = document.getElementById('clock-date');
-  const examCountdown = document.getElementById('exam-countdown');
-
-  if (clockTime && clockDate && examCountdown) {
-    clockTime.innerHTML = timeStr; // Use innerHTML for <small> tag
-    clockDate.textContent = dateStr;
-
-    // Exam Countdown
-    const examDate = new Date(2026, 1, 8); // 08-02-2026 (Month is 0-indexed, so 1 = February)
-    let diff = examDate - now;
-
-    if (diff < 0) {
-      examCountdown.textContent = 'পরীক্ষা শুরু হয়েছে!';
-    } else {
-      const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-      examCountdown.textContent = `বোর্ড পরীক্ষা শুরু: ${months} মাস ${days} দিন পর*`;
+    // Create number elements and position them
+    function createNumbers(){
+      const rect = clockFace.getBoundingClientRect();
+      const radius = Math.min(rect.width, rect.height)/2 * 0.78;
+      // remove old
+      clockFace.querySelectorAll('.number')?.forEach(n => n.remove());
+      for(let i=0;i<12;i++){
+        const angle = (i/12)*Math.PI*2;
+        const x = Math.sin(angle)*radius;
+        const y = -Math.cos(angle)*radius;
+        const el = document.createElement('div');
+        el.className = 'number';
+        el.textContent = ROMANS[i];
+        el.style.left = `calc(50% + ${x.toFixed(2)}px)`;
+        el.style.top  = `calc(50% + ${y.toFixed(2)}px)`;
+        // keep upright text
+        const deg = angle * (180/Math.PI);
+        el.style.transform = `translate(-50%,-50%) rotate(${deg}deg) rotate(${-deg}deg)`;
+        clockFace.appendChild(el);
+      }
     }
-  }
-}
+
+    // handle resize
+    function setup(){
+      createNumbers();
+      setTimeout(createNumbers,140);
+    }
+    window.addEventListener('resize', ()=> {
+      clearTimeout(window.__clockResize);
+      window.__clockResize = setTimeout(createNumbers,120);
+    });
+    setup();
+
+    // elements
+    const hourHand = document.getElementById('hourHand');
+    const minuteHand = document.getElementById('minuteHand');
+    const secondHand = document.getElementById('secondHand');
+    const ampmEl = document.getElementById('ampm');
+    const examEl = document.getElementById('examLabel');
+
+    // Exam date: 08 June 2026 (user provided) - months are 0-indexed (5 = June)
+    const examDate = new Date(2026, 5, 8, 0, 0, 0);
+
+    // compute countdown (days, hours, minutes)
+    function computeCountdown(now){
+      const diffMs = examDate - now;
+      if(diffMs <= 0) return { finished:true };
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const days = Math.floor(totalSeconds / (60*60*24));
+      const hours = Math.floor((totalSeconds % (60*60*24)) / (60*60));
+      const mins = Math.floor((totalSeconds % (60*60)) / 60);
+      return { finished:false, days, hours, mins };
+    }
+
+    // animation loop for hands and updates for AM/PM and countdown
+    function update(){
+      const now = new Date();
+      const ms = now.getMilliseconds();
+      const s = now.getSeconds() + ms/1000;
+      const m = now.getMinutes() + s/60;
+      const h = (now.getHours() % 12) + m/60;
+
+      const sDeg = s * 6;
+      const mDeg = m * 6;
+      const hDeg = h * 30;
+
+      hourHand.style.transform = `translateX(-50%) translateY(-100%) rotate(${hDeg}deg)`;
+      minuteHand.style.transform = `translateX(-50%) translateY(-100%) rotate(${mDeg}deg)`;
+      secondHand.style.transform = `translateX(-50%) translateY(-100%) rotate(${sDeg}deg)`;
+
+      // AM/PM in English (center-top)
+      ampmEl.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
+
+      // Countdown update (every frame is fine, but values change per minute)
+      const cd = computeCountdown(now);
+      if(cd.finished){
+        examEl.textContent = 'Exam Started!';
+      } else {
+        examEl.textContent = `Exam in ${cd.days}d ${cd.hours}h ${cd.mins}m`;
+      }
+
+      // second-hand soft shadow pulse
+      const pulse = 6 + Math.sin((s/60)*Math.PI)*8;
+      secondHand.style.boxShadow = `0 8px 20px rgba(124,193,255,0.08), 0 0 ${pulse}px rgba(255,138,208,0.04)`;
+
+      requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+
+    // interactive tilt effect
+    const parent = document.querySelector('.wall-clock');
+    let leaveTimer;
+    parent.addEventListener('mousemove', (e)=>{
+      const r = parent.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      const dx = (e.clientX - cx) / r.width;
+      const dy = (e.clientY - cy) / r.height;
+      parent.style.transform = `translateZ(0) perspective(900px) rotateX(${dy*4}deg) rotateY(${dx*8}deg)`;
+      parent.style.transition = 'transform 120ms linear';
+      clearTimeout(leaveTimer);
+    });
+    parent.addEventListener('mouseleave', ()=>{
+      leaveTimer = setTimeout(()=> parent.style.transform = 'none', 120);
+    });
+  })();
 
 function setButtonVisibility() {
   const role = getUserRole();
