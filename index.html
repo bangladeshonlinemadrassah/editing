@@ -24,124 +24,197 @@
         }
         
         .container {
-            width: 5.3in;
-            height: 5.3in;
+            width: 5.5in;
+            height: 5.5in;
             background: white;
-            border-radius: 5px;
-            padding: 5px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            background: linear-gradient(to bottom, #ffffff, #f9f9f9);
         }
         
         .header {
             text-align: center;
-            margin-bottom: 3px;
-            padding-bottom: 2px;
-            border-bottom: 1px solid #eee;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 2px 0;
+            flex-shrink: 0;
         }
         
         .header h1 {
             margin: 0;
             font-size: 12px;
-            color: #667eea;
             font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
         
         .header p {
             margin: 1px 0;
-            font-size: 7px;
-            color: #666;
+            font-size: 6px;
+            opacity: 0.9;
         }
         
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 3px;
+            gap: 1px;
             flex: 1;
             overflow: hidden;
+            padding: 1px;
         }
         
         .denomination-section {
             display: flex;
             flex-direction: column;
-            gap: 1px;
             overflow: hidden;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.7);
         }
         
         .section-header {
             font-weight: bold;
-            font-size: 7px;
+            font-size: 6px;
             color: white;
-            padding: 1px 3px;
-            border-radius: 2px;
+            padding: 1px 2px;
+            border-radius: 1px;
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
         }
         
         .boxes {
             display: grid;
-            gap: 1px;
+            gap: 0.5px;
             overflow: hidden;
+            flex: 1;
+            padding: 0.5px;
         }
         
         .box {
-            aspect-ratio: 1;
             border: 0.5px solid #ddd;
             border-radius: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5px;
+            font-size: 4px;
             font-weight: bold;
             background: white;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            min-height: 0;
+            min-width: 0;
         }
         
         .box:hover {
-            background: #f0f0f0;
-            transform: scale(1.05);
+            transform: scale(1.03);
+            z-index: 10;
         }
         
         .box.checked {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-color: #667eea;
+            border-color: transparent;
         }
         
         /* Colors for different denominations */
-        .tk-50 { background: #e3f2fd; border-color: #2196F3; color: #1976D2; }
-        .tk-100 { background: #f3e5f5; border-color: #9C27B0; color: #7B1FA2; }
-        .tk-200 { background: #fff3e0; border-color: #FF9800; color: #F57C00; }
-        .tk-500 { background: #f3e5f5; border-color: #9C27B0; color: #7B1FA2; }
-        .tk-1000 { background: #f3e5f5; border-color: #9C27B0; color: #7B1FA2; }
-        .tk-2000 { background: #f3e5f5; border-color: #9C27B0; color: #7B1FA2; }
-        
-        .tk-50.checked, .tk-100.checked, .tk-200.checked, 
-        .tk-500.checked, .tk-1000.checked, .tk-2000.checked {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
+        .tk-50 { 
+            background: #e3f2fd; 
+            border-color: #2196F3; 
+            color: #1976D2; 
         }
         
-        .section-50 .section-header { background: #2196F3; }
-        .section-100 .section-header { background: #9C27B0; }
-        .section-200 .section-header { background: #FF9800; }
-        .section-500 .section-header { background: #9C27B0; }
-        .section-1000 .section-header { background: #9C27B0; }
-        .section-2000 .section-header { background: #9C27B0; }
+        .tk-100 { 
+            background: #f3e5f5; 
+            border-color: #9C27B0; 
+            color: #7B1FA2; 
+        }
+        
+        .tk-200 { 
+            background: #fff3e0; 
+            border-color: #FF9800; 
+            color: #F57C00; 
+        }
+        
+        .tk-500 { 
+            background: #e8f5e9; 
+            border-color: #4CAF50; 
+            color: #388E3C; 
+        }
+        
+        .tk-1000 { 
+            background: #e0f2f1; 
+            border-color: #26A69A; 
+            color: #00897B; 
+        }
+        
+        .tk-2000 { 
+            background: #ffebee; 
+            border-color: #F44336; 
+            color: #D32F2F; 
+        }
+        
+        /* Checked state with vibrant colors */
+        .tk-50.checked { 
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); 
+        }
+        
+        .tk-100.checked { 
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%); 
+        }
+        
+        .tk-200.checked { 
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); 
+        }
+        
+        .tk-500.checked { 
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%); 
+        }
+        
+        .tk-1000.checked { 
+            background: linear-gradient(135deg, #26A69A 0%, #00897B 100%); 
+        }
+        
+        .tk-2000.checked { 
+            background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%); 
+        }
+        
+        /* Section header colors */
+        .section-50 .section-header { 
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); 
+        }
+        
+        .section-100 .section-header { 
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%); 
+        }
+        
+        .section-200 .section-header { 
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); 
+        }
+        
+        .section-500 .section-header { 
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%); 
+        }
+        
+        .section-1000 .section-header { 
+            background: linear-gradient(135deg, #26A69A 0%, #00897B 100%); 
+        }
+        
+        .section-2000 .section-header { 
+            background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%); 
+        }
         
         .footer {
             text-align: center;
-            font-size: 6px;
+            font-size: 5px;
             color: #666;
-            margin-top: 3px;
-            padding-top: 2px;
-            border-top: 1px solid #eee;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1px 0;
+            flex-shrink: 0;
+        }
+        
+        .footer strong {
+            color: #2c3e50;
         }
         
         @media print {
@@ -174,30 +247,7 @@
             <div class="denomination-section section-50">
                 <div class="section-header">৫০ টাকা (৪০) = ২,০০০</div>
                 <div class="boxes" style="grid-template-columns: repeat(8, 1fr);">
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
-                    <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
+                    <!-- Repeat 40 times -->
                     <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
                     <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
                     <div class="box tk-50" onclick="this.classList.toggle('checked')">৫০</div>
@@ -245,13 +295,8 @@
             <div class="denomination-section section-100">
                 <div class="section-header">১০০ টাকা (৩০) = ৩,০০০</div>
                 <div class="boxes" style="grid-template-columns: repeat(6, 1fr);">
+                    <!-- Repeat 30 times -->
                     <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
-                    <div class="ox tk-100" onclick="this.classList.toggle('checked')">১০০</div>
                     <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
                     <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
                     <div class="box tk-100" onclick="this.classList.toggle('checked')">১০০</div>
@@ -288,6 +333,7 @@
             <div class="denomination-section section-200">
                 <div class="section-header">২০০ টাকা (২৫) = ৫,০০০</div>
                 <div class="boxes" style="grid-template-columns: repeat(5, 1fr);">
+                    <!-- Repeat 25 times -->
                     <div class="box tk-200" onclick="this.classList.toggle('checked')">২০০</div>
                     <div class="box tk-200" onclick="this.classList.toggle('checked')">২০০</div>
                     <div class="box tk-200" onclick="this.classList.toggle('checked')">২০০</div>
@@ -319,7 +365,8 @@
             <!-- 500 টাকা সেকশন -->
             <div class="denomination-section section-500">
                 <div class="section-header">৫০০ টাকা (৫০) = ২৫,০০০</div>
-                <div class="boxes" style="grid-template-columns: repeat(5, 1fr);">
+                <div class="boxes" style="grid-template-columns: repeat(10, 1fr);">
+                    <!-- Repeat 50 times -->
                     <div class="box tk-500" onclick="this.classList.toggle('checked')">৫০০</div>
                     <div class="box tk-500" onclick="this.classList.toggle('checked')">৫০০</div>
                     <div class="box tk-500" onclick="this.classList.toggle('checked')">৫০০</div>
@@ -376,7 +423,8 @@
             <!-- 1000 টাকা সেকশন -->
             <div class="denomination-section section-1000">
                 <div class="section-header">১,০০০ টাকা (৫০) = ৫০,০০০</div>
-                <div class="boxes" style="grid-template-columns: repeat(5, 1fr);">
+                <div class="boxes" style="grid-template-columns: repeat(10, 1fr);">
+                    <!-- Repeat 50 times -->
                     <div class="box tk-1000" onclick="this.classList.toggle('checked')">১k</div>
                     <div class="box tk-1000" onclick="this.classList.toggle('checked')">১k</div>
                     <div class="box tk-1000" onclick="this.classList.toggle('checked')">১k</div>
@@ -433,7 +481,8 @@
             <!-- 2000 টাকা সেকশন -->
             <div class="denomination-section section-2000">
                 <div class="section-header">২,০০০ টাকা (৩৫) = ৭০,০০০</div>
-                <div class="boxes" style="grid-template-columns: repeat(5, 1fr);">
+                <div class="boxes" style="grid-template-columns: repeat(7, 1fr);">
+                    <!-- Repeat 35 times -->
                     <div class="box tk-2000" onclick="this.classList.toggle('checked')">২k</div>
                     <div class="box tk-2000" onclick="this.classList.toggle('checked')">২k</div>
                     <div class="box tk-2000" onclick="this.classList.toggle('checked')">২k</div>
@@ -487,4 +536,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
